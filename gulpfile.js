@@ -44,8 +44,8 @@ const ENV = process.env.NODE_ENV,
         },
         views: {
           task: 'build:views',
-          src: [ 'src/views/**/*.html', '!src/views/_base.html' ],
-          watch: 'src/views/**/*',
+          src: [ 'src/*.html', '!src/_base.html' ],
+          watch: 'src/*.html',
           dest: 'dist'
         },
         components: {
@@ -63,7 +63,7 @@ const ENV = process.env.NODE_ENV,
       },
       OPTIONS = {
         nunjucks: {
-          path: 'src/views'
+          path: 'src'
         },
         rollup: {
           plugins: [
