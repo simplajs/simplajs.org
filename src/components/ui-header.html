@@ -1,0 +1,212 @@
+<link rel="import" href="/assets/shared-styles.html">
+<link rel="import" href="/bower_components/simple-dropdown/simple-dropdown.html">
+<link rel="import" href="/bower_components/simpla-text/simpla-text.html">
+<link rel="import" href="/components/ui-logo.html" async>
+
+<dom-module id="ui-header">
+  <template>
+    <style include="shared-styles">
+      @custom-media --mobile (max-width: 28em);
+
+      :host {
+        display: inline-block;
+        width: 100%;
+        padding: 0 var(--panel-gutter);
+        background: var(--simpla-blue);
+        color: white;
+      }
+
+      .navbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex: 1 0 auto;
+        padding: 1.35rem 0;
+      }
+
+      .navbar__logo {
+        height: 1.65rem;
+      }
+
+      /* Desktop nav */
+      .navbar__nav {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        margin-left: 0.75rem;
+        width: 100%;
+      }
+
+      .navbar__nav__item {
+        position: relative;
+        display: inline-block;
+        align-self: center;
+        margin: 0 0.75rem;
+        line-height: 1;
+        padding: 0.55rem 0;
+      }
+
+      .navbar__nav__item::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background: currentColor;
+        border-radius: 2px;
+        transform: scale(0);
+        transform-origin: center center;
+        opacity: 0;
+        transition: all 150ms var(--simpla-easing-accelerate);
+      }
+
+      .navbar__nav__item[data-selected]::after {
+        transform: scale(1);
+        opacity: 1;
+        transition: all 150ms var(--simpla-easing-decelerate);
+      }
+
+      .navbar__nav__item--featured {
+        @apply --button;
+        background: white;
+        color: var(--simpla-blue);
+        box-shadow: var(--simpla-elevation-1);
+      }
+
+      .navbar__nav__seperator {
+        font-size: var(--scale-1);
+        margin: 0 0.25rem;
+      }
+
+      @media not all and (--mobile) {
+        .navbar__mobile-nav {
+          display: none;
+        }
+      }
+
+      @media (--mobile) {
+        .navbar__nav {
+          display: none;
+        }
+      }
+
+      /* Mobile nav */
+      .navbar__mobile-nav {
+        --simple-dropdown-icon-size: 1em;
+        --simple-dropdown-toggle: {
+          padding: 0.5em 0.9em 0.5em 1em;
+          font-size: var(--scale-00);
+          border: 1px solid white;
+          border-radius: var(--simpla-border-radius);
+        };
+      }
+
+      .navbar__mobile-nav__item {
+        @apply --simpla-simple-dropdown-menu-item;
+        padding-left: 2rem !important;
+        padding-right: 2rem !important;
+        font-size: var(--scale-0) !important;
+        color: var(--simpla-text-color);
+      }
+
+      .navbar__mobile-nav__item:hover {
+        background: var(--simpla-grey-50);
+      }
+
+      .navbar__mobile-nav__item[data-selected] {
+        background: var(--simpla-grey-50);
+      }
+
+      /**
+       * Content
+       */
+       .content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 3.15rem 0 2.65rem;
+      }
+      .content__heading {
+        font-size: var(--scale-3);
+      }
+      @media (--mobile) {
+        .content__heading {
+          font-size: var(--scale-2);
+        }
+      }
+      .content__copy {
+        font-size: var(--scale-1);
+        margin-top: 0.35rem;
+        opacity: 0.9;
+      }
+    </style>
+    <div class="navbar">
+      <a href="/">
+        <ui-logo class="navbar__logo"></ui-logo>
+      </a>
+
+      <!-- Desktop nav -->
+      <nav class="navbar__nav">
+        <a href="https://www.webcomponents.org/collection/simplaio/simpla-elements"
+          class="navbar__nav__item"
+          target="_blank">
+          Elements
+        </a>
+        <a href="/docs"
+          class="navbar__nav__item"
+          data-selected$="[[_isSelected('docs', view)]]">
+          Docs
+        </a>
+      </nav>
+
+      <!-- Mobile nav -->
+      <simple-dropdown
+        class="navbar__mobile-nav"
+        origin="top right"
+        label="menu"
+      >
+        <a href="https://www.webcomponents.org/collection/simplaio/simpla-elements"
+          class="navbar__mobile-nav__item"\
+          target="_blank">
+          Elements
+        </a>
+        <a href="/docs"
+          class="navbar__mobile-nav__item"
+          data-selected$="[[_isSelected('docs', view)]]">
+          Docs
+        </a>
+      </simple-dropdown>
+    </div>
+
+    <div class="content" hidden$="[[slim]]">
+      <h1 class="content__heading">
+        <simpla-text path="/header/[[view]]/heading"></simpla-text>
+      </h1>
+
+      <p class="content__copy">
+        <simpla-text path="/header/[[view]]/tagline"></simpla-text>
+      </p>
+    </div>
+  </template>
+  <script>
+    class UiHeader {
+      beforeRegister() {
+        this.is ="ui-header";
+
+        this.properties = {
+          view: String,
+          slim: {
+            type: Boolean,
+            reflectToAttribute: true
+          }
+        };
+      }
+
+      _isSelected(check, view) {
+        return view === check;
+      }
+    }
+    Polymer(UiHeader);
+  </script>
+</dom-module>

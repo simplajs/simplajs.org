@@ -1,0 +1,212 @@
+<link rel="import" href="/assets/shared-styles.html">
+<link rel="import" href="/bower_components/iron-pages/iron-pages.html">
+<link rel="import" href="/components/util-syntax.html">
+
+<dom-module id="ui-example-snippets">
+  <template>
+    <style include="shared-styles">
+      @custom-media --collapsed (max-width: 65em) and (min-width: 55rem), (max-width: 33em);
+
+      :root {
+        --ui-example-snippets-height: 19.5rem;
+      }
+
+      :host {
+        display: flex;
+        width: 100%;
+        border-radius: var(--simpla-border-radius);
+        border: 1px solid var(--simpla-grey-300);
+        overflow: hidden;
+        max-width: 38rem;
+        /* FRAGILE / HACK */
+        height: var(--ui-example-snippets-height);
+      }
+
+      @media (--collapsed) {
+        :host {
+          flex-direction: column;
+          height: calc(var(--ui-example-snippets-height) + 4rem);
+        }
+      }
+
+      .nav {
+        display: flex;
+        flex-direction: column;
+        flex-basis: 8rem;
+        flex-shrink: 0;
+        width: 100%;
+        padding: 0.75rem ;
+        background: var(--simpla-grey-50);
+        border-right: 1px solid var(--simpla-grey-300);
+      }
+
+      @media (--collapsed) {
+        .nav {
+          flex-direction: row;
+          flex-basis: initial;
+        }
+      }
+
+      .nav__item {
+        display: block;
+        padding: 0.45em 0.85em;
+        margin: 0.25rem 0;
+        font-size: var(--scale-000);
+        color: var(--simpla-grey-700);
+        border-radius: var(--simpla-border-radius);
+      }
+
+      .nav__item[data-selected] {
+        background: var(--simpla-grey-300);
+      }
+
+      .snippets {
+        height: 100%;
+        width: 100%;
+        overflow: scroll;
+        background: var(--simpla-text-color);
+      }
+
+      .snippets__pages {
+        height: 100%;
+      }
+
+      .snippets__snippet {
+        margin: 0;
+        border: 0;
+        height: 100%;
+        min-height: 16.5rem;
+        padding: 1.75rem 1.5rem;
+        background: transparent;
+      }
+
+      .snippets__snippet code {
+        background: transparent;
+        white-space: pre;
+      }
+    </style>
+
+    <nav class="nav">
+      <a class="nav__item"
+        data-select="collection"
+        on-tap="_handleNav">
+        collections
+      </a>
+
+      <a class="nav__item"
+        data-select="blog"
+        on-tap="_handleNav">
+        blogs
+      </a>
+
+      <a class="nav__item"
+        data-select="localization"
+        on-tap="_handleNav">
+        localization
+      </a>
+
+      <a class="nav__item"
+        data-select="responsive"
+        on-tap="_handleNav">
+        responsive
+      </a>
+    </nav>
+
+    <util-syntax class="snippets">
+
+      <iron-pages
+        class="snippets__pages"
+        selected="[[selected]]"
+        attr-for-selected="data-snippet"
+        on-iron-select="_updateSelected"
+      >
+
+<pre class="snippets__snippet" data-snippet="collection"><code class="language-html">&lt;simpla-collection path=&quot;/gallery&quot; as=&quot;photo&quot;&gt;
+
+  &lt;!-- Item template --&gt;
+  &lt;template&gt;
+    &lt;img is=&quot;simpla-img&quot; path=&quot;/gallery/[photo]/img&quot;&gt;
+    &lt;simpla-text path=&quot;/gallery/[photo]/caption&quot;&gt;&lt;/simpla-text&gt;
+  &lt;/template&gt;
+
+&lt;/simpla-collection&gt;</code></pre>
+
+<pre class="snippets__snippet" data-snippet="blog"><code class="language-html">&lt;simpla-article id=&quot;post&quot;&gt;&lt;/simpla-article&gt;
+
+&lt;script&gt;
+  // Get post slug from URL
+  var post = document.querySelector('#post'),
+      path = window.location.pathname,
+      slug = path.split('blog/').pop();
+
+  // Set post path to fetch/create post
+  post.path = '/posts/' + slug;
+&lt;/script&gt;</code></pre>
+
+<pre class="snippets__snippet" data-snippet="localization"><code class="language-html">&lt;!-- Localization namespace, using simpla-paths --&gt;
+&lt;div id=&quot;localize&quot; sid=&quot;en&quot;&gt;
+  &lt;simpla-text sid=&quot;content&quot;&gt;&lt;/simpla-text&gt;
+&lt;/div&gt;
+
+&lt;script&gt;
+  var localize = document.querySelector('#localize');
+
+  // Set locale to browser language
+  localize.setAttribute('sid', navigator.languge);
+&lt;/script&gt;</code></pre>
+
+<pre class="snippets__snippet" data-snippet="responsive"><code class="language-html">&lt;simpla-text id=&quot;content&quot;&gt;&lt;/simpla-text&gt;
+
+&lt;script&gt;
+  var content = document.querySelector('#content'),
+      isMobile = window.innerWidth &lt; 600,
+      path = isMobile ? '/content#mobile' : '/content';
+
+  // Serve different content on mobile
+  content.path = path;
+&lt;/script&gt;</code></pre>
+      </iron-pages>
+
+    </util-syntax>
+  </template>
+
+  <script>
+    const SELECTED_ATTR = 'data-selected';
+
+    class UiExampleSnippets {
+      beforeRegister() {
+        this.is = 'ui-example-snippets';
+
+        this.properties = {
+
+          selected: {
+            type: String,
+            value: 'collection'
+          }
+
+        };
+      }
+
+      _handleNav(e) {
+        let navItem = Polymer.dom(e).rootTarget;
+
+        this.selected = navItem.dataset.select;
+      }
+
+      _updateSelected(e) {
+        let selected = e.detail.item.dataset.snippet,
+            previous = this.$$(`a[${SELECTED_ATTR}]`),
+            current = this.$$(`a[data-select="${selected}"]`);
+
+        if (previous) {
+          previous.removeAttribute(SELECTED_ATTR);
+        }
+
+        if (current) {
+          current.setAttribute(SELECTED_ATTR, true);
+        }
+      }
+    };
+    Polymer(UiExampleSnippets);
+  </script>
+</dom-module>

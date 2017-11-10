@@ -1,0 +1,185 @@
+<link rel="import" href="/assets/shared-styles.html">
+<link rel="import" href="/bower_components/paper-tooltip/paper-tooltip.html">
+
+<dom-module id="index-title">
+  <template>
+    <style include="shared-styles">
+      :root {
+        --title-notification-size: 0.55rem;
+      }
+
+      :host {
+        position: relative;
+        overflow: visible;
+      }
+
+      .notification {
+        display: none;
+        position: absolute;
+        top: -0.25rem;
+        right: -0.75rem;
+        width: var(--title-notification-size);
+        height: var(--title-notification-size);
+        background: currentColor;
+        border-radius: 50%;
+        opacity: 0.9;
+        cursor: pointer;
+        overflow: visible;
+      }
+
+      .notification:hover {
+        opacity: 1;
+      }
+
+      .notification::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: var(--title-notification-size);
+        width: var(--title-notification-size);
+        border: 1px solid currentColor;
+        border-radius: 50%;
+        background: currentColor;
+        box-shadow: inset 0 0 3px currentColor;
+        transform: scale(1.1);
+        animation: title-notification 1.5s infinite ease;
+      }
+
+      .notification[data-active] {
+        display: inline-block;
+      }
+
+      .notification__tooltip {
+        --paper-tooltip-opacity: 1;
+        --paper-tooltip-background: var(--simpla-grey-700);
+        --paper-tooltip: {
+          font-family: 'GT Walsheim', sans-serif;
+          font-weight: 400;
+          font-size: 0.6rem;
+          line-height: 1.6;
+          width: 6rem;
+        };
+      }
+
+      @keyframes title-notification {
+        0% {
+          opacity: 1;
+        }
+        80%, 100% {
+          opacity: 0;
+          transform: scale(2.75);
+        }
+      }
+    </style>
+
+    <simpla-text
+      id="title"
+      path="[[path]]"
+      loaded="{{loaded}}"
+      on-focus="_giveFocus"
+      on-blur="_removeFocus"
+      on-input="_setEdited"
+      inline>
+    </simpla-text>
+
+    <div class="notification"
+      data-active$="[[_showNotification(_editableReady, _hasFocus, _hasEdited)]]"
+      on-tap="_focusTitle"
+    >
+      <paper-tooltip
+        class="notification__tooltip"
+        position="top"
+        animation-delay="100">
+        This title is editable! Tap to try it
+      </paper-tooltip>
+    </div>
+  </template>
+
+  <script>
+    class IndexTitle {
+      beforeRegister() {
+        this.is = 'index-title';
+
+        this.properties = {
+
+          path: String,
+
+          title: String,
+
+          loaded: {
+            type: Boolean,
+            observer: '_initTitle'
+          },
+
+          _editableReady: Boolean,
+
+          _hasFocus: {
+            type: Boolean,
+            value: false
+          },
+
+          _hasEdited: {
+            type: Boolean,
+            value: false
+          },
+
+          _initialValue: String
+
+        };
+      }
+
+      _initTitle(loaded) {
+        let title = this.$.title;
+
+        if (!this.path) {
+          return;
+        }
+
+        this._initialValue = title.value;
+        title.editable = true;
+
+        title.loadEditor()
+          .then(() => {
+            this._editableReady = true;
+            this._focusTitle(true)
+          });
+      }
+
+      _giveFocus() {
+        this._hasFocus = true;
+      }
+
+      _removeFocus() {
+        this._hasFocus = false;
+      }
+
+      _setEdited() {
+        if (this.$.title.value !== this._initialValue) {
+          this._hasEdited = true;
+        }
+      }
+
+      _showNotification(editableReady, hasFocus, hasEdited) {
+        return editableReady && !hasFocus && !hasEdited;
+      }
+
+      _focusTitle(center) {
+        let title = this.$.title,
+            content = Array.from(title.childNodes).find(node => node.nodeName === '#text'),
+            range = document.createRange(),
+            cursor = window.getSelection(),
+            cursorPos = center === true ? Math.round(content.length / 2) : content.length;
+
+        Polymer.RenderStatus.afterNextRender(this, () => {
+          title.focus();
+          range.setStart(content, cursorPos);
+          range.collapse(true);
+          cursor.removeAllRanges();
+          cursor.addRange(range);
+        });
+      }
+    }
+    Polymer(IndexTitle);
+  </script>
+</dom-module>

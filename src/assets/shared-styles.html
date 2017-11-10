@@ -1,0 +1,237 @@
+<link rel="import" href="/bower_components/simpla-styles/simple.html">
+
+<dom-module id="shared-styles">
+  <template>
+    <style>
+      /* Normalize, based on browserslist */
+      @context normalize;
+
+      /**
+       * Base
+       */
+      html, :host {
+        display: block;
+        box-sizing: border-box;
+        -moz-osx-font-smoothing: grayscale;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      *, *::before, *::after {
+        box-sizing: inherit;
+      }
+
+      /**
+       * Typography
+       */
+      h1, h2, h3, h4, h5, h6 {
+        margin: 0;
+        line-height: 1.3;
+        font-weight: 400;
+        max-width: 100%;
+      }
+
+      p, li {
+        line-height: 1.5;
+      }
+
+      a {
+        text-decoration: none;
+        color: inherit;
+        cursor: pointer;
+        outline: none;
+        transition: color 100ms ease;
+      }
+
+      p a,
+      li a {
+        color: var(--simpla-blue);
+      }
+
+      b, strong {
+        font-weight: 700;
+      }
+
+      blockquote {
+        margin: 1.25rem 0;
+        padding-left: 0.8em;
+        border-left: 0.35rem solid var(--simpla-grey-300);
+      }
+
+      /**
+       * Forms
+       */
+      input,
+      textarea,
+      input:invalid {
+        font-family: inherit;
+        font-size: inherit;
+        color: inherit;
+        background: transparent;
+        outline: 0;
+        margin: 0;
+        box-shadow: none;
+      }
+
+      *::placeholder {
+        color: inherit;
+        opacity: 0.5;
+      }
+
+      fieldset {
+        border: 0;
+        padding: 0;
+        margin: 0;
+      }
+
+      button {
+        border: none;
+        padding: 0;
+      }
+
+      /**
+       * Code
+       */
+      pre, code {
+        font-family: 'Source Code Pro', monospace;
+      }
+
+      pre {
+        background: var(--simpla-grey-50);
+        padding: 1.15rem 1.5rem;
+        border-radius: var(--simpla-border-radius);
+        white-space: pre;
+        tab-size: 4;
+        overflow-x: scroll;
+      }
+
+      pre, code {
+        font-size: var(--scale-000);
+        color: var(--simpla-grey-700);
+      }
+
+      :not(pre) > code {
+        display: inline-block;
+        padding: 0.02em 0.25em;
+        background: var(--simpla-grey-50);
+        border-radius: var(--simpla-border-radius);
+        vertical-align: middle;
+        margin: 0 0.05em 0.15em;
+      }
+
+      a > code {
+        color: var(--simpla-blue);
+      }
+
+      pre,
+      pre code {
+        line-height: 1.5;
+        white-space: pre-wrap;
+      }
+
+      pre.language-sh > code::before,
+      pre.language-shell > code::before,
+      pre.language-bash > code::before {
+        content: '$';
+        display: inline-block;
+        margin-right: 0.8em;
+      }
+
+      /**
+       * Tables
+       */
+      table {
+        @apply --table
+      }
+
+      thead tr {
+        @apply --table-header
+      }
+
+      th {
+        padding: 0.65rem 1rem;
+        font-weight: 400;
+      }
+
+      td {
+        padding: 1.25em;
+        white-space: pre-wrap;
+      }
+
+      /**
+       * Simple UI elements
+       * Dummy props in mixins for ShadyCSS parser bug
+       */
+      simple-modal {
+        --simple-modal: {
+          @apply --simpla-simple-modal;
+          dummy: prop;
+        };
+        --simple-modal-title:  {
+          @apply --simpla-simple-modal-title;
+          font-size: var(--scale-2);
+        };
+        --simple-modal-overlay: var(--simpla-simple-modal-overlay);
+        --simple-modal-close-color: var(--simpla-simple-modal-close-color);
+      }
+
+      /* HACK - Can't specify direct child under Shady, be careful! */
+      simple-modal p:first-child {
+        margin-top: 0;
+      }
+
+      simple-callout {
+        @apply --simpla-simple-callout;
+      }
+
+      simple-dropdown {
+        --simple-dropdown-menu: {
+          @apply --simpla-simple-dropdown-menu;
+          dummy: prop;
+        };
+      }
+
+      button[is="simple-button"] {
+        font-family: var(--font-family);
+      }
+
+      /**
+       * Misc
+       */
+      /* Hide logic-only elements */
+      data-user,
+      data-projects,
+      data-project-users,
+      data-subscriptions,
+      data-invites,
+      util-document-meta,
+      iron-media-query {
+        display: none;
+      }
+
+      /* Patch hidden prop in IE*/
+      [hidden] {
+        display: none !important;
+      }
+
+      /**
+       * Standard animations
+       */
+      @keyframes pulse {
+        0% { opacity: 1; }
+        40% { opacity: 0.5; }
+        100% { opacity: 1; }
+      }
+
+      @keyframes placeholder-loading {
+        0% { background: var(--simpla-grey-300); }
+        40% { background: var(--simpla-grey-100); }
+        100% { background: var(--simpla-grey-300); }
+      }
+
+      @keyframes fade-in {
+        from { opacity: 0; }
+        to { opacity: 1; }
+      }
+    </style>
+  </template>
+</dom-module>

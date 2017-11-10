@@ -1,0 +1,160 @@
+<dom-module id="util-syntax">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+
+      /**
+       * prism.js tomorrow night eighties theme
+       * Based on https://github.com/chriskempson/tomorrow-theme
+       * Base styles stripped (let Simpla.io handle)
+       */
+      ::content .token.comment,
+      ::content .token.block-comment,
+      ::content .token.prolog,
+      ::content .token.doctype,
+      ::content .token.cdata {
+        color: var(--simpla-grey-500);
+      }
+
+      ::content .token.punctuation {
+        color: #A1C0DA;
+      }
+
+      ::content .token.tag,
+      ::content .token.attr-name,
+      ::content .token.namespace,
+      ::content .token.deleted {
+        color: #e2777a;
+      }
+
+      ::content .token.function-name {
+        color: #6196cc;
+      }
+
+      ::content .token.boolean,
+      ::content .token.number,
+      ::content .token.function {
+        color: #f08d49;
+      }
+
+      ::content .token.property,
+      ::content .token.class-name,
+      ::content .token.constant,
+      ::content .token.symbol {
+        color: #f8c555;
+      }
+
+      ::content .token.selector,
+      ::content .token.important,
+      ::content .token.atrule,
+      ::content .token.keyword,
+      ::content .token.builtin {
+        color: #cc99cd;
+        font-weight: bold;
+      }
+
+      ::content .token.string,
+      ::content .token.char,
+      ::content .token.attr-value,
+      ::content .token.regex,
+      ::content .token.variable {
+        color: #7ec699;
+      }
+
+      ::content .token.operator,
+      ::content .token.entity,
+      ::content .token.url {
+        color: #67cdcc;
+      }
+
+      ::content .token.important,
+      ::content .token.bold {
+        font-weight: bold;
+      }
+
+      ::content .token.italic {
+        font-style: italic;
+      }
+
+      ::content .token.entity {
+        cursor: help;
+      }
+
+      ::content .token.inserted {
+        color: green;
+      }
+
+    </style>
+    <content></content>
+  </template>
+  <script>
+    import 'prismjs';
+    import 'prismjs/components/prism-json';
+
+    class UtilSyntax {
+      beforeRegister() {
+        this.is = 'util-syntax';
+
+        this.properties = {
+
+          selector: {
+            type: String,
+            value: '[class*=language-]'
+          },
+
+          refreshOn: {
+            type: String,
+            observer: '_addRefreshListener'
+          },
+
+          _refreshListeners: {
+            type: Array,
+            value: []
+          }
+
+        }
+      }
+
+      highlight(element) {
+        let content = element.nodeType ? element : Polymer.dom(this),
+            codes = content.querySelectorAll(this.selector);
+
+        Array.from(codes)
+          .forEach((code) => {
+            try {
+              Prism.highlightElement(code)
+            } catch (e) {
+              // Prism always expects there to be a parent element, but for example
+              //  if this is in Shadow DOM - there won't be a 'parent'. Given that
+              //  syntax highlighting should be progressive enhancement, we can
+              //  just swallow the errors
+              console.warn(e);
+            }
+          });
+      }
+
+      attached() {
+        this._observer = Polymer.dom(this).observeNodes((info) => {
+          info.addedNodes
+            .filter((node) => node.nodeType === Node.ELEMENT_NODE)
+            .forEach((item) => this.highlight(item));
+        });
+      }
+
+      detached() {
+        Polymer.dom(this).unobserveNodes(this._observer);
+        this._refreshListeners.forEach(listener => {
+          this.unlisten(this, listener, 'highlight')
+        });
+      }
+
+      _addRefreshListener(refreshOn) {
+        this._refreshListeners.push(refreshOn);
+        this.listen(this, refreshOn, 'highlight');
+      }
+    };
+    Polymer(UtilSyntax);
+  </script>
+</dom-module>

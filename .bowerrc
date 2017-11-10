@@ -1,0 +1,6 @@
+{
+  "directory": "dist/bower_components",
+   "scripts": {
+    "postinstall": "gulp bower:minify"
+  }
+}

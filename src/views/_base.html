@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ title }}</title>
+    <meta name="description" content="{{ description }}">
+
+    <!-- Social -->
+    <meta property="og:image" content="https://www.simpla.io/assets/img/hero.png">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site:id" content="@simplaio">
+    <meta name="twitter:image" content="https://www.simpla.io/assets/img/hero.png">
+
+    <!-- Icons -->
+    <link rel="icon" sizes="32x32" href="/assets/img/icns/favicon-32x32.png">
+    <link rel="icon" sizes="192x192" href="/assets/img/icns/favicon-192x192.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/img/icns/apple-touch-icon-180x180.png">
+    <meta name="msapplication-TileImage" content="/assets/img/icns/mstile-310x310.png">
+
+    <!-- Prefetch fonts -->
+    <!-- Only get WOFF2, covers most browsers with prefetch support -->
+    <link rel="prefetch" href="/assets/fonts/gt-walsheim/regular.woff2">
+    <link rel="prefetch" href="/assets/fonts/gt-walsheim/medium.woff2">
+    <link rel="prefetch" href="/assets/fonts/gt-walsheim/bold.woff2">
+
+    <!-- Global JS -->
+    <script src="https://unpkg.com/webcomponents.js@^0.7.24/webcomponents-lite.min.js" async></script>
+    <script>
+      import Simpla from 'simpla';
+      import SimplaNetlify from 'simpla/adapters/netlify';
+      import FontFaceObserver from 'fontfaceobserver';
+
+      const SIMPLA_CONFIG = {
+        repo: 'simplaio/simpla.io',
+        auth: new SimplaNetlify({ site: 'simplaio' }),
+        source: window.location.origin,
+        branch: 'master'
+      };
+
+      /* Configure Polymer */
+      window.Polymer = {
+        dom: 'shadow',
+        lazyRegister: true,
+        useNativeCSSProperties: true
+      };
+
+      /* Setup Simpla */
+      Simpla.init(SIMPLA_CONFIG);
+      window.Simpla = Simpla;
+
+      /**
+      * Lazyload fonts
+      */
+      (() => {
+      const walsheim = new FontFaceObserver('GT Walsheim');
+      walsheim.load().then(() => {
+        document.documentElement.classList.add('fonts-loaded');
+      });
+      })();
+    </script>
+
+    <!-- Components -->
+    <link rel="import" href="/bower_components/polymer/polymer.html">
+    <link rel="import" href="/bower_components/simpla-admin/simpla-admin" async>
+    {% block imports %}{% endblock %}
+
+    <!-- Styles -->
+    <link rel="import" href="/bower_components/simpla-styles/simpla-styles.html" async>
+    <link rel="import" href="/assets/shared-styles.html">
+    <style is="custom-style" include="shared-styles">
+      @custom-media --mobile (max-width: 30em);
+      @custom-media --tablet (max-width: 55em);
+      @custom-media --large-screen (min-width: 110em);
+
+      /**
+       * Includes
+       * Simpla-styles provides colors, typography, and UI includes
+       */
+      html {
+
+        /* Root-based modular scale
+           Matches simpla-styles scale */
+        --scale-000: 0.8rem;
+        --scale-00: 0.89rem;
+        --scale-0: 1rem;
+        --scale-1: 1.19rem;
+        --scale-2: 1.55rem;
+        --scale-3: 1.92rem;
+        --scale-4: 2.62rem;
+        --scale-5: 3.11rem;
+        --scale-6: 4.24rem;
+        --scale-7: 5rem;
+
+        /* Extra colors */
+        --pastel-red: #e2777a;
+        --blue: #03A9F4;
+
+        /* Typography */
+        --font-content: sans-serif;
+        --font-ui: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+
+        /* UI */
+        --panel-gutter: 3.5rem;
+        --page-vertical-gutter: 4rem;
+
+        --wrapper: {
+          display: block;
+          width: 100%;
+          max-width: 80rem;
+          padding: 0 var(--panel-gutter);
+          margin: 0 auto;
+        };
+
+        --grey-panel: {
+          background: var(--simpla-grey-50);
+          border-top: solid 1px var(--simpla-grey-300);
+          border-bottom: solid 1px var(--simpla-grey-300);
+        };
+
+        --button: {
+          font-family: var(--font-ui);
+          position: relative;
+          display: inline-block;
+          padding: 0.75em 1em;
+          min-width: 4rem;
+          font-size: var(--scale-000);
+          font-weight: 500;
+          line-height: 1;
+          border: 0;
+          outline: 0;
+          border-radius: var(--simpla-border-radius);
+          color: white;
+          background: var(--simpla-blue);
+          text-align: center;
+          white-space: nowrap;
+          cursor: pointer;
+          user-select: none;
+        };
+
+        --button-fatter: 0.9em 1.25em;
+
+        /* Defaults */
+        --iron-icon-width: 1em;
+        --iron-icon-height: 1em;
+      }
+
+      html.fonts-loaded {
+        --font-content: 'GT Walsheim', sans-serif;
+      }
+
+      @media (--large-screen) {
+        html {
+          --panel-gutter: 5rem;
+        }
+      }
+
+      @media (--tablet) {
+        html {
+          --panel-gutter: 2.5rem;
+        }
+      }
+
+      @media (--mobile) {
+        html {
+          --panel-gutter: 1.5rem;
+          --page-vertical-gutter: 3.75rem;
+        }
+      }
+
+      /**
+       * Font imports
+       */
+      @font-face {
+        font-family: 'GT Walsheim';
+        src: url('/assets/fonts/gt-walsheim/regular.woff2') format('woff2'),
+             url('/assets/fonts/gt-walsheim/regular.woff') format('woff');
+        font-weight: 400;
+        font-style: normal;
+      }
+
+      @font-face {
+        font-family: 'GT Walsheim';
+        src: url('/assets/fonts/gt-walsheim/medium.woff2') format('woff2'),
+             url('/assets/fonts/gt-walsheim/medium.woff') format('woff');
+        font-weight: 500;
+        font-style: normal;
+      }
+
+      @font-face {
+        font-family: 'GT Walsheim';
+        src: url('/assets/fonts/gt-walsheim/bold.woff2') format('woff2'),
+             url('/assets/fonts/gt-walsheim/bold.woff') format('woff');
+        font-weight: 700;
+        font-style: normal;
+      }
+
+      /**
+       * Core defaults
+       * Responsive font-size from postcss-responsive-type
+       */
+      html {
+        font-family: var(--font-content);
+        font-size: responsive 15px 18px;
+        color: var(--simpla-text-color);
+        min-height: 100%;
+        -ms-overflow-style: -ms-autohiding-scrollbar;
+        scroll-behavior: smooth;
+      }
+
+      body {
+        position: relative;
+        margin: 0;
+      }
+    </style>
+
+    {% block styles %}{% endblock %}
+  </head>
+
+  <body>
+    <!--!
+                                   8888.
+       aaaa;;;;;;;;               888888                                  78888
+      aaaaaa;;;;;;                .8888                                   78888
+     aaaaaaaa;;;;                                                         78888
+     aaaaaaaaa;;        888888    78888  8888 88888 88888   78888.88888   78888    88888 7888
+     aaaaaaaaaaa       88888888   78888  88888888888888888  788888888888  78888  888888888888
+      aaaaaaaaaaa     88888  788  78888  8888  88888  7888  78888   88888 78888  88888 788888
+       aaaaaaaaaaa     788888     78888  8888  78888  7888  78888   78888 78888  8888    8888
+        aaaaaaaaaaa      788888   78888  8888  78888  7888  78888   88888 78888  8888   88888
+        ;aaaaaaaaaa   888   8888  78888  8888  78888  7888  7888888888888 78888  888888888888
+       ;;;;aaaaaaa    8888888888  78888  8888  78888  7888  78888;888888  78888  8888888;8888
+      ;;;;;;aaaaa       888888    78888  8888  78888  7888  78888  7888   78888    7888  7888
+     ;;;;;;;;aaa                                            78888
+                                                            78888
+    -->
+
+    <!-- Content -->
+    {% block view %}{% endblock %}
+
+    <!-- Page-specific JS -->
+    {% block scripts %}{% endblock %}
+  </body>
+</html>

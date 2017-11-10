@@ -1,0 +1,54 @@
+---
+title: Oh no
+description: We couldn't find what you were looking for, try again?
+---
+
+{% extends '_base.html' %}
+
+{% block styles %}
+<style is="custom-style">
+  @custom-media --mobile (max-width: 475px);
+
+  .body {
+    flex: 1;
+    padding-bottom: 5rem;
+    background: white;
+    text-align: center;
+  }
+
+  .punch {
+    font-size: 21vw;
+    font-weight: 700;
+    color: white;
+    background: var(--simpla-blue);
+    margin-bottom: 2rem;
+  }
+
+  @media (--mobile) {
+    .punch {
+      font-size: 24vw;
+      line-height: 1.6;
+    }
+  }
+
+  .explainer {
+    color: var(--simpla-grey-700);
+    font-size: 1.75rem;
+    width: 85%;
+    margin: 0.75rem auto;
+  }
+
+  @media (--mobile) {
+    .explainer {
+      font-size: var(--scale-2);
+    }
+  }
+</style>
+{% endblock %}
+
+{% block view %}
+<main class="body">
+  <h1 class="punch">Ouch.</h1>
+  <p class="explainer">We couldn't find what you were looking for.</p>
+</main>
+{% endblock %}

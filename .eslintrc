@@ -1,0 +1,28 @@
+{
+  "extends": "eslint:recommended",
+  "env": {
+    "browser": true,
+    "es6": true,
+    "node": true
+  },
+  "parserOptions": {
+    "sourceType": "module"
+  },
+  "plugins": [
+    "html"
+  ],
+  "globals": {
+    "Polymer": true
+  },
+  "rules": {
+    "no-undefined": "error",
+    "no-unused-vars": "warn",
+    "indent": ["error", 2, {
+      "SwitchCase": 1,
+      "VariableDeclarator": { "var": 2, "let": 2, "const": 3 }
+    }],
+    "linebreak-style": ["error", "unix"],
+    "semi": ["error", "always"],
+    "valid-jsdoc": 2
+  }
+}

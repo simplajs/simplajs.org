@@ -1,0 +1,259 @@
+<link rel="import" href="/assets/shared-styles.html">
+<link rel="import" href="/bower_components/iron-media-query/iron-media-query.html" async>
+<link rel="import" href="/components/util-syntax.html">
+
+<dom-module id="ui-example-interactive">
+  <template>
+    <style include="shared-styles">
+      :host {
+        border-radius: var(--simpla-border-radius);
+        overflow: hidden;
+        border: 1px solid var(--simpla-grey-300);
+        max-width: 43rem;
+      }
+
+      /**
+       * Titlebar
+       */
+      .titlebar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 1.75rem;
+        padding: 0 0.25rem;
+        background: var(--simpla-grey-100);
+      }
+
+      .titlebar__buttons {
+        display: inline-flex;
+        align-items: center;
+      }
+
+      .titlebar__buttons__button {
+        width: 0.5rem;
+        height: 0.5rem;
+        border-radius: 50%;
+        margin: 0 0.25rem;
+      }
+
+      .titlebar__buttons__button:nth-child(1) {
+        background: #fc605b;
+      }
+
+      .titlebar__buttons__button:nth-child(2) {
+        background: #fdbc40;
+      }
+
+      .titlebar__buttons__button:nth-child(3) {
+        background: #34c84a;
+      }
+
+      .titlebar__toggle {
+        color: var(--simpla-grey-700);
+        font-size: var(--scale-000);
+        font-weight: 500;
+        cursor: pointer;
+        margin-right: 0.25rem;
+        padding: 0.5rem;
+        user-select: none;
+      }
+
+      /**
+       * Layout
+       */
+      .body {
+        display: flex;
+      }
+
+      :host([view="split"]) .code,
+      :host([view="split"]) .result {
+        flex: 1 0 auto;
+        width: 50%;
+      }
+
+      :host([view="code"]) .code,
+      :host([view="result"]) .result {
+        width: 100%;
+      }
+
+      :host([view="code"]) .result,
+      :host([view="result"]) .code {
+        display: none;
+      }
+
+      /**
+       * Content
+       */
+      .code {
+        text-align: left;
+        padding: 1.5rem 1rem;
+        margin: 0;
+        border: none;
+        border-radius: 0;
+        border-right: 1px solid var(--simpla-grey-100);
+        overflow: hidden;
+      }
+
+      .code__content {
+        white-space: pre;
+      }
+
+      .result {
+        padding: 1.75rem 1.5rem;
+        color: var(--simpla-grey-700);
+        background: white;
+      }
+
+      .result__heading {
+        font-size: var(--scale-2);
+        color: var(--simpla-text-color);
+        line-height: 1;
+        margin-bottom: -0.35rem;
+      }
+
+      .result__heading__content {
+        display: inline-block;
+        width: 100%;
+      }
+
+      .result__img {
+        display: block;
+        width: 100%;
+        margin-top: 2rem;
+        border-radius: 3px;
+      }
+    </style>
+
+    <div class="titlebar">
+      <div class="titlebar__buttons">
+        <span class="titlebar__buttons__button"></span>
+        <span class="titlebar__buttons__button"></span>
+        <span class="titlebar__buttons__button"></span>
+      </div>
+
+      <span
+        class="titlebar__toggle"
+        on-tap="_toggleView"
+        hidden$="[[!_mobile]]">
+      [[_toggleText]]</span>
+
+    </div>
+
+    <util-syntax>
+      <div class="body">
+
+<pre class="code"><code class="language-html code__content" id="snippet">&lt;h1&gt;
+  &lt;simpla&#x2011;text path=&quot;/title&quot;&gt;&lt;/simpla&#x2011;text&gt;
+&lt;/h1&gt;
+
+&lt;simpla&#x2011;text path=&quot;/content&quot;&gt;&lt;/simpla&#x2011;text&gt;
+
+&lt;img is=&quot;simpla-img&quot; path=&quot;/image&quot;&gt;</code></pre>
+
+        <div class="result">
+          <h1 class="result__heading">
+            <simpla-text
+              class="result__heading__content"
+              editable="{{interactive}}">
+            </simpla-text>
+          </h1>
+
+          <simpla-text
+            editable="{{interactive}}">
+          </simpla-text>
+
+          <img is="simpla-img"
+            class="result__img"
+            editable="{{interactive}}"
+          >
+        </div>
+      </div>
+    </util-syntax>
+
+    <iron-media-query
+      query="(max-width: 38em)"
+      query-matches="{{_mobile}}">
+    </iron-media-query>
+  </template>
+
+  <script>
+    class UiExampleInteractive {
+      beforeRegister() {
+        this.is = 'ui-example-interactive';
+
+        this.properties = {
+
+          active: Boolean,
+
+          interactiveOn: {
+            type: String,
+            observer: '_makeInteractive'
+          },
+
+          interactive: {
+            type: Boolean,
+            observer: '_stayInteractive'
+          },
+
+          view: {
+            type: String,
+            reflectToAttribute: true
+          },
+
+          _mobile: {
+            type: Boolean,
+            observer: '_mobileChanged'
+          },
+
+          _toggleText: {
+            type: String,
+            computed: '_computeToggleText(view)'
+          }
+
+        };
+      }
+
+      _makeInteractive(interactiveOn) {
+        Simpla.get(interactiveOn)
+          .then(() => this.async(() => this.interactive = true, 1));
+      }
+
+      _computeToggleText(view) {
+        let text;
+
+        switch (view) {
+        case 'code':
+          text = 'show result';
+          break;
+        case 'result':
+          text = 'show code';
+          break;
+        default:
+          text = undefined;
+        }
+
+        return text;
+      }
+
+      _mobileChanged(mobile) {
+        if (mobile) {
+          this.view = 'code';
+        } else {
+          this.view = 'split'
+        }
+      }
+
+      _toggleView() {
+        this.view = this.view === 'code' ? 'result' : 'code';
+      }
+
+      _stayInteractive(nowInteractive, wasInteractive) {
+        if (wasInteractive) {
+          this.interactive = true;
+        }
+      }
+
+    };
+    Polymer(UiExampleInteractive);
+  </script>
+</dom-module>

@@ -1,0 +1,480 @@
+---
+title: Simpla
+description: Simpla is the best
+---
+
+{% extends '_base.html' %}
+
+{% block imports %}
+<link rel="import" href="/bower_components/simpla-text/simpla-text.html">
+<link rel="import" href="/bower_components/simpla-img/simpla-img.html">
+<link rel="import" href="/bower_components/simpla-link/simpla-link.html">
+<link rel="import" href="/bower_components/iron-icon/iron-icon.html" async>
+<link rel="import" href="/components/ui-header.html" async>
+<link rel="import" href="/components/ui-example-interactive.html" async>
+<link rel="import" href="/components/ui-example-snippets.html" async>
+<link rel="import" href="/components/index-title.html">
+<link rel="import" href="/assets/icons.html" async>
+{% endblock %}
+
+{% block styles %}
+<style is="custom-style">
+  @custom-media --tablet (max-width: 55em);
+  @custom-media --mobile (max-width: 32em);
+
+  .body {
+    flex: 1;
+  }
+
+  .wrapper {
+    @apply --wrapper;
+    padding-top: var(--page-vertical-gutter);
+    padding-bottom: var(--page-vertical-gutter);
+  }
+
+  .heading {
+    font-size: var(--scale-2);
+  }
+
+  .centered-copy {
+    color: var(--simpla-grey-700);
+    max-width: 40rem;
+    margin: 0 auto;
+  }
+
+  /**
+  * Splash panel
+  */
+  .splash {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    height: 90vh;
+    min-height: 25rem;
+    max-height: 45rem;
+    background: var(--simpla-blue);
+  }
+
+  .splash__content {
+    position: relative;
+    z-index: 1;
+  }
+
+  .splash__heading {
+    display: inline-block;
+    font-size: var(--scale-6);
+    font-weight: 600;
+    max-width: 45rem;
+    color: white;
+  }
+
+  @media (--mobile) {
+    .splash__heading {
+      font-size: var(--scale-5);
+    }
+  }
+
+  .splash__cta {
+    @apply --button;
+    margin-top: 10vh;
+    font-size: var(--scale-0);
+    color: var(--simpla-blue);
+    padding: var(--button-fatter);
+    background: white;
+    box-shadow: var(--simpla-elevation-1)
+  }
+
+  @media (max-height: 30rem) {
+    .splash__cta {
+      margin-top: 2.5rem;
+    }
+  }
+
+  @media (min-height: 55rem) {
+    .splash__cta {
+      margin-top: 4.5rem;
+    }
+  }
+
+  .splash__more {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: var(--scale-3);
+    color: white;
+    opacity: 0.75;
+    cursor: pointer;
+    transition: opacity 200ms ease;
+  }
+
+  .splash__more:hover {
+    opacity: 1;
+  }
+
+  /**
+  * Intro panel
+  */
+  .intro {
+    text-align: center;
+  }
+
+  .intro__graphic {
+    margin: 2.5rem auto 0;
+  }
+
+  /**
+  * Testimonial
+  */
+  .testimonial {
+    @apply --grey-panel;
+    margin: 2.5rem 0;
+  }
+
+  .testimonial__content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .testimonial__quote {
+    position: relative;
+    font-size: var(--scale-2);
+    color: var(--simpla-blue);
+    max-width: 40rem;
+  }
+
+  @media (--mobile) {
+    .testimonial__quote {
+      font-size: var(--scale-1);
+    }
+  }
+
+  .testimonial__quote::before {
+    content: '“';
+    position: absolute;
+    top: -4.5rem;
+    left: -3rem;
+    font-size: 24rem;
+    line-height: 1;
+    opacity: 0.1;
+    color: var(--simpla-blue);
+  }
+
+  @media (--mobile) {
+    .testimonial__quote::before {
+      font-size: 18rem;
+      top: -3.5rem;
+      left: -1.5rem;
+    }
+  }
+
+  .testimonial__name {
+    line-height: 1.6;
+    color: var(--simpla-grey-700);
+  }
+
+  .testimonial__logo {
+    height: var(--scale-3);
+    margin-top: 0.5rem;
+  }
+
+  /**
+  * Features section
+  */
+  .features {
+    padding-top: 0;
+    max-width: 70rem
+  }
+
+  .feature {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: var(--page-vertical-gutter);
+    padding-bottom: var(--page-vertical-gutter);
+  }
+
+  @media (--mobile) {
+    .feature {
+      padding-bottom: 0;
+    }
+  }
+
+  .feature:nth-of-type(even) {
+    flex-direction: row-reverse;
+  }
+
+  @media (--tablet) {
+    .feature,
+    .feature:nth-of-type(even) {
+      flex-direction: column;
+      justify-content: center;
+    }
+  }
+
+  .feature__content {
+    width: 44%;
+    flex-shrink: 0;
+    max-width: 27rem;
+    padding: 0 2rem;
+  }
+
+  @media (--tablet) {
+    .feature__content {
+      width: 100%;
+      max-width: 100%;
+      text-align: center;
+      max-width: 36rem;
+      padding: 0;
+    }
+  }
+
+  .feature__content__copy {
+    margin-top: -0.1em;
+    color: var(--simpla-grey-700);
+  }
+
+  .feature__content__cta,
+  .ecosystem__cta {
+    display: inline-flex;
+    align-items: center;
+    color: var(--simpla-blue);
+    font-weight: 500;
+  }
+
+  .feature__content__cta::after,
+  .ecosystem__cta::after {
+    content: '\203a';
+    margin-left: 0.3em;
+    margin-top: 0.05em;
+    font-size: 1.35em;
+    vertical-align: middle;
+  }
+
+  .feature__graphic {
+    width: 52%;
+  }
+
+  @media (--tablet) {
+    .feature__graphic {
+      width: 100%;
+      max-width: 32rem;
+      margin-top: 2.5rem;
+    }
+  }
+
+  .feature__graphic__img {
+    width: 100%;
+  }
+
+  /**
+  * Ecosystsem panel
+  */
+  .ecosystem {
+    text-align: center;
+    padding-top: 0;
+  }
+
+  .ecosystem__cta {
+    margin: 0.5rem auto 2rem;
+  }
+
+
+  /**
+  * CTA panel
+  */
+  .cta {
+    background: var(--blue);
+    color: white;
+    text-align: center;
+    padding-bottom: 1rem;
+  }
+
+  .cta__copy {
+    margin-top: 0.5rem;
+  }
+
+  .cta__button {
+    @apply --button;
+    background: white;
+    color: var(--blue);
+    font-size: var(--scale-0);
+    margin-top: 1rem;
+    box-shadow: var(--simpla-elevation-1);
+  }
+
+  /**
+  * Footer
+  */
+  .footer {
+    background: var(--blue);
+    border-top: 1px solid var(--simpla-light-white);
+    --footer-newsletter-button-color: var(--blue);
+  }
+</style>
+{% endblock %}
+
+{% block view %}
+<ui-header view="home" slim></ui-header>
+
+<main class="body">
+
+  <section class="splash" sid="splash">
+    <div class="splash__content wrapper">
+      <h1 class="splash__heading">
+        <index-title sid="heading"></index-title>
+      </h1>
+      <br>
+      <simpla-link sid="cta" class="splash__cta">
+        <simpla-text sid="text" inline plaintext></simpla-text>
+      </simpla-link>
+    </div>
+
+    <a class="splash__more" id="see-more">
+      <iron-icon icon="simpla:arrow-downward"></iron-icon>
+    </a>
+  </section>
+
+  <section class="intro wrapper" sid="intro">
+    <h1 class="heading">
+      <simpla-text sid="heading"></simpla-text>
+    </h1>
+
+    <simpla-text class="centered-copy" sid="copy"></simpla-text>
+
+    <ui-example-interactive
+      class="intro__graphic"
+      interactive-on="/home/splash/heading">
+    </ui-example-interactive>
+  </section>
+
+  <aside class="testimonial" sid="testimonial">
+    <div class="testimonial__content wrapper">
+      <p class="testimonial__quote">
+        <simpla-text sid="quote"></simpla-text>
+      </p>
+      <span class="testimonial__name">
+        <simpla-text sid="name"></simpla-text>
+      </span>
+      <img is="simpla-img"
+        class="testimonial__logo"
+        sid="logo"
+      >
+    </div>
+  </aside>
+
+  <div class="features wrapper" sid="features">
+    <div class="feature" sid="development">
+      <div class="feature__content">
+        <h1 class="heading">
+          <simpla-text sid="heading"></simpla-text>
+        </h1>
+
+        <simpla-text
+          class="feature__content__copy"
+          sid="copy">
+        </simpla-text>
+
+        <simpla-link sid="cta" class="feature__content__cta">
+          <simpla-text sid="text" inline plaintext></simpla-text>
+        </simpla-link>
+      </div>
+
+      <div class="feature__graphic">
+        <ui-example-snippets></ui-example-snippets>
+      </div>
+    </div>
+
+    <div class="feature" sid="editing">
+      <div class="feature__content">
+        <h1 class="heading">
+          <simpla-text sid="heading"></simpla-text>
+        </h1>
+
+        <simpla-text class="feature__content__copy" sid="copy"></simpla-text>
+      </div>
+
+      <div class="feature__graphic">
+        <img is="simpla-img"
+          class="feature__graphic__img"
+          sid="graphic"
+        >
+      </div>
+    </div>
+
+    <div class="feature" sid="webcomponents">
+      <div class="feature__content">
+        <h1 class="heading">
+          <simpla-text sid="heading"></simpla-text>
+        </h1>
+
+        <simpla-text class="feature__content__copy" sid="copy"></simpla-text>
+      </div>
+
+      <div class="feature__graphic">
+        <img is="simpla-img"
+          class="feature__graphic__img"
+          sid="graphic"
+        >
+      </div>
+    </div>
+  </div>
+
+  <section class="ecosystem wrapper" sid="ecosystem">
+    <h1 class="heading">
+      <simpla-text sid="heading"></simpla-text>
+    </h1>
+
+    <simpla-text
+      class="centered-copy"
+      sid="copy">
+    </simpla-text>
+
+    <simpla-link sid="cta" class="ecosystem__cta">
+      <simpla-text sid="text" inline plaintext></simpla-text>
+    </simpla-link>
+  </section>
+
+  <section class="cta" sid="cta">
+    <div class="wrapper">
+      <h1 class="heading">
+        <simpla-text sid="heading"></simpla-text>
+      </h1>
+
+      <p class="cta__copy">
+        <simpla-text sid="copy"></simpla-text>
+      </p>
+
+      <simpla-link sid="cta" class="cta__button">
+        <simpla-text sid="text" inline plaintext></simpla-text>
+      </simpla-link>
+    </div>
+  </section>
+</main>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  import smoothscrollPolyfill from 'smoothscroll-polyfill';
+
+  /**
+   * Splash section see-more button
+   */
+  (() => {
+    const button = document.querySelector('#see-more'),
+          target = document.querySelector('.intro');
+
+    button.addEventListener('click', () => {
+      target.scrollIntoView({ behavior: 'smooth' });
+    });
+
+    smoothscrollPolyfill.polyfill();
+  })();
+
+</script>
+{% endblock %}

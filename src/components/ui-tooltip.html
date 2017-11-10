@@ -1,0 +1,71 @@
+<link rel="import" href="/assets/shared-styles.html">
+<link rel="import" href="/bower_components/paper-tooltip/paper-tooltip.html">
+<link rel="import" href="/bower_components/iron-icon/iron-icon.html" async>
+<link rel="import" href="/bower_components/iron-icons/iron-icons.html" async>
+
+<dom-module id="ui-tooltip">
+  <template>
+    <style include="shared-styles">
+      :host {
+        display: inline-block;
+        color: var(--simpla-grey-500);
+        min-width: var(--scale-000);
+        min-height: var(--scale-000);
+      }
+
+      .icon {
+        font-size: 0.75rem;
+      }
+
+      .tooltip {
+        --paper-tooltip-opacity: 1;
+        --paper-tooltip-background: var(--simpla-grey-700);
+        --paper-tooltip: {
+          font-family: 'GT Walsheim', sans-serif;
+          font-size: 0.6rem;
+          line-height: 1.6;
+          max-width: 8.5rem
+        };
+      }
+    </style>
+
+    <iron-icon
+      class="icon"
+      icon="icons:help-outline">
+    </iron-icon>
+
+    <paper-tooltip
+      class="tooltip"
+      position="top"
+      offset="5"
+      fit-to-visible-bounds
+      animation-delay="100">
+      [[text]]
+    </paper-tooltip>
+
+    <content></content>
+  </template>
+
+  <script>
+    class UiTooltip {
+      beforeRegister() {
+        this.is = 'ui-tooltip';
+
+        this.properties = {
+
+          text: String
+
+        };
+
+        this.listeners = {
+          tap: '_openTooltip'
+        };
+      }
+
+      _openTooltip() {
+        this.$$('.tooltip').show();
+      }
+    }
+    Polymer(UiTooltip);
+  </script>
+</dom-module>
