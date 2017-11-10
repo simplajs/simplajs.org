@@ -16,31 +16,18 @@
   },
   "dependencies": {
     "polymer": "^1.7.0",
-    "iron-media-query": "PolymerElements/iron-media-query#^1.0.8",
-    "iron-icons": "PolymerElements/iron-icons#~1.1.0",
     "iron-iconset-svg": "PolymerElements/iron-iconset-svg#^1.1.0",
-    "app-route": "PolymerElements/app-route#^0.9.1",
-    "iron-pages": "^1.0.7",
-    "contents": "^4.0.2",
     "simpla-admin": "^1.0.0",
-    "simpla-article": "^1.0.0",
     "simpla-collection": "^1.0.0",
     "simpla-img": "^1.0.0",
     "simpla-link": "^1.0.0",
-    "simpla-markdown": "^0.4.8",
     "simpla-paths": "^1.0.1",
     "simpla-text": "^1.0.0",
     "simpla-styles": "^1.0.0",
-    "simple-drawer": "^0.3.4",
     "simple-button": "^0.2.3",
     "simple-callout": "^0.4.2",
     "simple-dropdown": "SimpleElements/simple-dropdown#^0.4.0",
-    "simple-modal": "simple-modal-element#^0.3.0",
-    "dom-repeat-n": "^1.0.3",
-    "paper-tooltip": "^1.1.3",
-    "polymer-sortablejs": "^0.1.3",
-    "iron-location": "PolymerElements/iron-location#^0.8.11",
-    "lazy-import": "^0.2.0"
+    "paper-tooltip": "^1.1.3"
   },
   "resolutions": {
     "simple-dropdown": "^0.4.0"
