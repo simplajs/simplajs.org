@@ -91,6 +91,7 @@
         --scale-5: 3.11rem;
         --scale-6: 4.24rem;
         --scale-7: 5rem;
+        --scale-8: 6.5rem;
 
         /* Extra colors */
         --pastel-red: #e2777a;
@@ -203,13 +204,15 @@
         font-family: var(--font-content);
         font-size: responsive 15px 18px;
         color: var(--simpla-text-color);
-        min-height: 100%;
         -ms-overflow-style: -ms-autohiding-scrollbar;
         scroll-behavior: smooth;
       }
 
       body {
         position: relative;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
         margin: 0;
       }
     </style>

@@ -11,6 +11,7 @@ description: Simpla is an open, modular, frontend content management framework b
 <link rel="import" href="/bower_components/simpla-link/simpla-link.html">
 <link rel="import" href="/bower_components/iron-icon/iron-icon.html" async>
 <link rel="import" href="/components/ui-header.html" async>
+<link rel="import" href="/components/ui-footer.html" async>
 <link rel="import" href="/components/ui-example-interactive.html" async>
 <link rel="import" href="/components/ui-example-snippets.html" async>
 <link rel="import" href="/components/index-title.html">
@@ -283,39 +284,6 @@ description: Simpla is an open, modular, frontend content management framework b
   .ecosystem__cta {
     margin: 0.5rem auto 2rem;
   }
-
-
-  /**
-  * CTA panel
-  */
-  .cta {
-    background: var(--blue);
-    color: white;
-    text-align: center;
-    padding-bottom: 1rem;
-  }
-
-  .cta__copy {
-    margin-top: 0.5rem;
-  }
-
-  .cta__button {
-    @apply --button;
-    background: white;
-    color: var(--blue);
-    font-size: var(--scale-0);
-    margin-top: 1rem;
-    box-shadow: var(--simpla-elevation-1);
-  }
-
-  /**
-  * Footer
-  */
-  .footer {
-    background: var(--blue);
-    border-top: 1px solid var(--simpla-light-white);
-    --footer-newsletter-button-color: var(--blue);
-  }
 </style>
 {% endblock %}
 
@@ -439,23 +407,11 @@ description: Simpla is an open, modular, frontend content management framework b
       <simpla-text sid="text" inline plaintext></simpla-text>
     </simpla-link>
   </section>
-
-  <section class="cta" sid="cta">
-    <div class="wrapper">
-      <h1 class="heading">
-        <simpla-text sid="heading"></simpla-text>
-      </h1>
-
-      <p class="cta__copy">
-        <simpla-text sid="copy"></simpla-text>
-      </p>
-
-      <simpla-link sid="cta" class="cta__button">
-        <simpla-text sid="text" inline plaintext></simpla-text>
-      </simpla-link>
-    </div>
-  </section>
 </main>
+<ui-footer
+  class="footer"
+  view="home">
+</ui-footer>
 {% endblock %}
 
 {% block scripts %}

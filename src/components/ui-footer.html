@@ -1,0 +1,109 @@
+<link rel="import" href="/assets/shared-styles.html">
+
+<dom-module id="ui-footer">
+  <template>
+    <style include="shared-styles">
+      :host {
+        display: inline-block;
+        width: 100%;
+        padding: var(--scale-6) 0 var(--scale-1);
+        text-align: center;
+        background: var(--blue);
+        color: white;
+      }
+
+      .wrapper {
+        @apply --wrapper;
+      }
+
+      .heading {
+        font-size: var(--scale-2);
+        font-weight: 700;
+      }
+
+      .copy {
+        margin-top: 0.5rem;
+      }
+
+      .cta {
+        @apply --button;
+        background: white;
+        color: var(--blue);
+        font-size: var(--scale-0);
+        margin-top: 1rem;
+        box-shadow: var(--simpla-elevation-1);
+      }
+
+      .fineprint {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: var(--scale-8);
+        font-size: var(--scale-00);
+      }
+
+      .fineprint__social__item {
+        font-size: var(--scale-2);
+      }
+
+      .fineprint__social__item {
+        margin: 0 0.6rem;
+      }
+
+      /* Producthunt icon visual illusion */
+      .fineprint__social__item:first-child iron-icon {
+        transform: scale(0.85);
+      }
+    </style>
+
+    <footer class="wrapper">
+      <div hidden$="[[slim]]">
+        <h1 class="heading">
+          <simpla-text path="/[[view]]/footer/heading"></simpla-text>
+        </h1>
+
+        <p class="copy">
+          <simpla-text path="/[[view]]/footer/copy"></simpla-text>
+        </p>
+
+        <simpla-link path="/[[view]]/footer/cta" class="cta">
+          <simpla-text path="/[[view]]/footer/cta/text" inline plaintext></simpla-text>
+        </simpla-link>
+      </div>
+
+      <div class="fineprint">
+        <span>&copy; [[_currentYear()]]</span>
+        <div class="fineprint__social">
+          <a href="https://github.com/simplaio/simpla" class="fineprint__social__item">
+            <iron-icon icon="simpla:github"></iron-icon>
+          </a>
+          <a href="https://slack.simpla.io" class="fineprint__social__item">
+            <iron-icon icon="simpla:slack"></iron-icon>
+          </a>
+          <a href="https://twitter.com/simplaio" class="fineprint__social__item">
+            <iron-icon icon="simpla:twitter"></iron-icon>
+          </a>
+        </div>
+        <a href="https://github.com/simplaio/simpla/blob/master/CONTRIBUTING.md" class="fineprint__contribute">contribute</a>
+      </div>
+    </footer>
+  </template>
+</dom-module>
+
+<script>
+  class UiFooter {
+    beforeRegister() {
+      this.is = 'ui-footer';
+
+      this.properties = {
+        slim: Boolean,
+        view: String
+      };
+    }
+
+    _currentYear() {
+      return new Date().getFullYear();
+    }
+  }
+  Polymer(UiFooter);
+</script>
