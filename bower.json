@@ -32,6 +32,7 @@
     "iron-pages": "PolymerElements/iron-pages#^2.0.0"
   },
   "resolutions": {
-    "simple-dropdown": "^0.4.0"
+    "simple-dropdown": "^0.4.0",
+    "webcomponentsjs": "^0.7.24"
   }
 }
