@@ -18,12 +18,6 @@
     <link rel="apple-touch-icon" sizes="180x180" href="/assets/img/icns/apple-touch-icon-180x180.png">
     <meta name="msapplication-TileImage" content="/assets/img/icns/mstile-310x310.png">
 
-    <!-- Prefetch fonts -->
-    <!-- Only get WOFF2, covers most browsers with prefetch support -->
-    <link rel="prefetch" href="/assets/fonts/gt-walsheim/regular.woff2">
-    <link rel="prefetch" href="/assets/fonts/gt-walsheim/medium.woff2">
-    <link rel="prefetch" href="/assets/fonts/gt-walsheim/bold.woff2">
-
     <!-- Render-blocking JS -->
     <script src="https://unpkg.com/webcomponents.js@^0.7.24/webcomponents-lite.min.js" async></script>
     <script>
@@ -54,6 +48,7 @@
     {% block imports %}{% endblock %}
 
     <!-- Styles -->
+    <link href="https://fonts.googleapis.com/css?family=Nunito:600" rel="stylesheet">
     <link rel="import" href="/bower_components/simpla-styles/simpla-styles.html" async>
     <link rel="import" href="/assets/shared-styles.html">
     <style is="custom-style" include="shared-styles">
@@ -136,6 +131,7 @@
 
       html.fonts-loaded {
         --font-content: 'GT Walsheim', sans-serif;
+        --font-ui: 'Nunito', sans-serif;
       }
 
       @media (--large-screen) {
@@ -238,7 +234,9 @@
       */
       (() => {
       const walsheim = new FontFaceObserver('GT Walsheim');
-      walsheim.load().then(() => {
+      const nunito = new FontFaceObserver('Nunito');
+
+      Promise.all([nunito.load(), walsheim.load()]).then(() => {
         document.documentElement.classList.add('fonts-loaded');
       });
       })();

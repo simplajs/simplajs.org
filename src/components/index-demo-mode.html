@@ -1,52 +1,42 @@
 <link rel="import" href="/assets/shared-styles.html">
 <link rel="import" href="/bower_components/simple-callout/simple-callout.html">
+<link rel="import" href="/bower_components/paper-toggle-button/paper-toggle-button.html" async>
 
 <dom-module id="index-demo-mode">
   <template>
     <style include="shared-styles">
       :host {
         position: relative;
-        border-radius: 999px;
+        display: inline-flex;
+        align-items: center;
+        background: var(--simpla-grey-100);
+        padding: var(--scale-00) var(--scale-1);
+        border-radius: var(--simpla-border-radius);
         border: 1px solid var(--simpla-grey-300);
-        transition: background 90ms ease;
-        width: 8.75rem;
-        height: 2.8rem;
-        background: #fefefe;
         user-select: none;
       }
 
-      :host([active]) {
-        background: var(--simpla-blue);
-      }
-
-      .thumb {
-        position: absolute;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        left: 0;
-        width: 61.75%;
-        height: 100%;
-        border-radius: 999px;
-        font-size: var(--scale-000);
+      .label {
+        font-family: var(--font-ui);
+        font-size: var(--scale-00);
         color: var(--simpla-grey-700);
-        font-weight: bold;
-        background: var(--simpla-grey-100);
-        border: 1px solid var(--simpla-grey-300);
-        cursor: pointer;
-        transition: transform 150ms var(--simpla-easing-standard);
+        margin-right: var(--scale-00);
       }
 
-      :host([active]) .thumb {
-        color: var(--simpla-blue);
-        transform: translateX(63%);
+      .toggle {
+        --primary-color: var(--simpla-blue);
+        --dark-primary-color: var(--simpla-blue);
+        --paper-toggle-button-unchecked-button-color: white;
+        --paper-toggle-button-unchecked-bar-color: var(--simpla-grey-700);
       }
 
       .tooltip {
         position: absolute;
         bottom: -3rem;
-        left: 0.5rem;
-        right: 0.5rem;
+        left: 0;
+        right: 0;
+        margin: auto;
+        width: 8.5rem;
         padding: 0.5rem;
         color: var(--simpla-grey-700);
         font-size: var(--scale-000);
@@ -56,12 +46,13 @@
 
       .exit {
         @apply(--button);
+        font-family: var(--font-ui);
         display: none;
         position: fixed;
         top: 1rem;
         right: 1.5rem;
-        font-size: var(--scale-00);
-        box-shadow: var(--simpla-elevation-2);
+        font-size: var(--scale-000);
+        box-shadow: var(--simpla-elevation-1);
         z-index: 9999;
       }
 
@@ -73,17 +64,18 @@
         @apply(--simpla-button-highlight-active)
       }
 
-      :host([active]) .exit {
+      .exit[data-active] {
         display: block;
       }
     </style>
 
-    <div
-      id="thumb"
-      class="thumb"
-      on-tap="toggle">
-      DEMO
-    </div>
+    <span class="label">live demo mode</span>
+
+    <paper-toggle-button
+      class="toggle"
+      active="{{active}}"
+      noink>
+    </paper-toggle-button>
 
     <simple-callout
       class="tooltip"
@@ -93,11 +85,12 @@
       no-escape
       arrow
     >
-      <span>Edit this page!</span>
+      <span>edit this page!</span>
     </simple-callout>
 
     <span class="exit"
-      on-tap="exit">
+      on-tap="exit"
+      data-active$="[[active]]">
       exit demo
     </span>
   </template>
@@ -112,7 +105,6 @@
         active: {
           type: Boolean,
           observer: '_syncEditableWithActive',
-          reflectToAttribute: true,
           value: false
         }
       };
