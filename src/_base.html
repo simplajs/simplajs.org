@@ -45,12 +45,16 @@
       // Save utility method
       // We're not using simpla-admin due to demo mode
       window.SimplaIO = {};
-      window.SimplaIO.save = async () => {
-        if (!Simpla.getState('authenticated')) {
-          await Simpla.login();
+      window.SimplaIO.save = () => {
+        const loginThenSave = () => {
+          if (!Simpla.getState('authenticated')) {
+            return Simpla.login().then(() => Simpla.save());
+          }
+
+          return Simpla.save();
         }
 
-        Simpla.save()
+        loginThenSave()
           .then(() => alert('Content saved!'))
           .catch(err => alert(`Save failed, ${err}`));
       }
