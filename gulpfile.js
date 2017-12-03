@@ -63,7 +63,10 @@ const ENV = process.env.NODE_ENV,
       },
       OPTIONS = {
         nunjucks: {
-          path: 'src'
+          path: 'src',
+          envOptions: {
+            autoescape: false
+          },
         },
         rollup: {
           plugins: [

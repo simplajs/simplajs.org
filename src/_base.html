@@ -24,12 +24,11 @@
     <link rel="prefetch" href="/assets/fonts/gt-walsheim/medium.woff2">
     <link rel="prefetch" href="/assets/fonts/gt-walsheim/bold.woff2">
 
-    <!-- Global JS -->
+    <!-- Render-blocking JS -->
     <script src="https://unpkg.com/webcomponents.js@^0.7.24/webcomponents-lite.min.js" async></script>
     <script>
       import Simpla from 'simpla';
       import SimplaNetlify from 'simpla/adapters/netlify';
-      import FontFaceObserver from 'fontfaceobserver';
 
       const SIMPLA_CONFIG = {
         repo: 'simplaio/simpla.io',
@@ -38,26 +37,16 @@
         branch: 'master'
       };
 
-      /* Configure Polymer */
+      // Config Polymer
       window.Polymer = {
         dom: 'shadow',
         lazyRegister: true,
         useNativeCSSProperties: true
       };
 
-      /* Setup Simpla */
+      // Init Simpla
       Simpla.init(SIMPLA_CONFIG);
       window.Simpla = Simpla;
-
-      /**
-      * Lazyload fonts
-      */
-      (() => {
-      const walsheim = new FontFaceObserver('GT Walsheim');
-      walsheim.load().then(() => {
-        document.documentElement.classList.add('fonts-loaded');
-      });
-      })();
     </script>
 
     <!-- Components -->
@@ -241,7 +230,23 @@
     <!-- Content -->
     {% block view %}{% endblock %}
 
+    <!-- Global JS -->
+    <script>
+      import FontFaceObserver from 'fontfaceobserver';
+
+      /**
+      * Lazyload fonts
+      */
+      (() => {
+      const walsheim = new FontFaceObserver('GT Walsheim');
+      walsheim.load().then(() => {
+        document.documentElement.classList.add('fonts-loaded');
+      });
+      })();
+    </script>
+
     <!-- Page-specific JS -->
     {% block scripts %}{% endblock %}
+
   </body>
 </html>

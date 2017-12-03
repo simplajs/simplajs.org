@@ -53,7 +53,7 @@ description: Simpla is an open, modular, frontend content management framework b
     justify-content: center;
     align-items: center;
     text-align: center;
-    height: 90vh;
+    height: 80vh;
     min-height: 25rem;
     max-height: 45rem;
     background: var(--simpla-blue);
@@ -80,12 +80,12 @@ description: Simpla is an open, modular, frontend content management framework b
 
   .splash__cta {
     @apply --button;
-    margin-top: 10vh;
     font-size: var(--scale-0);
     color: var(--simpla-blue);
     padding: var(--button-fatter);
+    margin-top: 8vh;
     background: white;
-    box-shadow: var(--simpla-elevation-1)
+    box-shadow: var(--simpla-elevation-1);
   }
 
   @media (max-height: 30rem) {
@@ -98,6 +98,30 @@ description: Simpla is an open, modular, frontend content management framework b
     .splash__cta {
       margin-top: 4.5rem;
     }
+  }
+
+  .splash__social {
+    margin-top: var(--scale-5);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .splash__social__button {
+    display: block;
+    margin: 0 var(--scale-1);
+    cursor: pointer;
+  }
+
+  .social__button__icon {
+    font-size: var(--scale-2);
+    margin-bottom: var(--scale-1);
+    transition: transform 100ms var(--simpla-easing-standard);
+  }
+
+  .splash__social__button:hover .social__button__icon {
+    transform: translateY(-25%);
   }
 
   .splash__more {
@@ -297,10 +321,31 @@ description: Simpla is an open, modular, frontend content management framework b
       <h1 class="splash__heading">
         <index-title sid="heading"></index-title>
       </h1>
-      <br>
       <simpla-link sid="cta" class="splash__cta">
         <simpla-text sid="text" inline plaintext></simpla-text>
       </simpla-link>
+      <div class="splash__social" sid="social">
+        <simpla-link sid="twitter" class="splash__social__button">
+          <iron-icon
+            icon="simplaio:twitter"
+            class="social__button__icon">
+          </iron-icon>
+          <simpla-text
+            sid="text"
+            class="social__button__text">
+          </simpla-text>
+        </simpla-link>
+        <simpla-link sid="github" class="splash__social__button">
+          <iron-icon
+            icon="simplaio:github"
+            class="social__button__icon">
+          </iron-icon>
+          <simpla-text
+            sid="text"
+            class="social__button__text">
+          </simpla-text>
+        </simpla-link>
+      </div>
     </div>
 
     <a class="splash__more" id="see-more">
