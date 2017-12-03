@@ -139,6 +139,8 @@ description: Simpla is an open, modular, frontend content management framework b
 
   .intro__graphic {
     margin: 2.5rem auto 0;
+    width: 100%;
+    max-width: 50rem;
   }
 
   /**
@@ -355,10 +357,7 @@ description: Simpla is an open, modular, frontend content management framework b
 
     <simpla-text class="centered-copy" sid="copy"></simpla-text>
 
-    <ui-example-interactive
-      class="intro__graphic"
-      interactive-on="/home/splash/heading">
-    </ui-example-interactive>
+    <img is="simpla-img" sid="graphic" class="intro__graphic">
   </section>
 
   <aside class="testimonial" sid="testimonial">
