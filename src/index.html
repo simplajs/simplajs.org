@@ -113,6 +113,7 @@ description: Simpla is an open, modular, frontend content management framework b
 
   .splash__social__button {
     display: block;
+    cursor: pointer;
     margin: 0 var(--scale-1);
   }
 
@@ -123,6 +124,10 @@ description: Simpla is an open, modular, frontend content management framework b
 
   .splash__social__button:hover .social__button__icon {
     transform: translateY(-25%);
+  }
+
+  .social__button__label {
+    font-size: var(--scale-00)
   }
 
   /**
@@ -299,7 +304,7 @@ description: Simpla is an open, modular, frontend content management framework b
 {% block view %}
 <ui-header view="home" slim></ui-header>
 
-<main class="body">
+<main class="body" sid="home">
 
   <section class="splash" sid="splash">
     <div class="splash__content wrapper">
@@ -322,7 +327,7 @@ description: Simpla is an open, modular, frontend content management framework b
           </iron-icon>
           <simpla-text
             sid="text"
-            class="social__button__text">
+            class="social__button__label">
           </simpla-text>
         </simpla-link>
         <simpla-link
@@ -336,7 +341,7 @@ description: Simpla is an open, modular, frontend content management framework b
           </iron-icon>
           <simpla-text
             sid="text"
-            class="social__button__text">
+            class="social__button__label">
           </simpla-text>
         </simpla-link>
       </div>
@@ -450,6 +455,7 @@ description: Simpla is an open, modular, frontend content management framework b
     </simpla-link>
   </section>
 </main>
+
 <ui-footer
   class="footer"
   view="home">
