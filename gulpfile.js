@@ -5,6 +5,7 @@ const notify = require('gulp-notify');
 const gulpif = require('gulp-if');
 const filter = require('gulp-filter');
 const lazypipe = require('lazypipe');
+const cached = require('gulp-cached');
 const size = require('gulp-size');
 const del = require('del');
 const path = require('path');
@@ -161,6 +162,7 @@ gulp.task(BUILDS.content.task, () => {
 
   return gulp.src(BUILDS.content.src)
     .pipe(errorNotifier())
+    .pipe(cached(BUILDS.content.task))
     .pipe(images)
     .pipe(imagemin())
     .pipe(images.restore)
@@ -174,6 +176,7 @@ gulp.task(BUILDS.content.task, () => {
 gulp.task(BUILDS.views.task, () => {
   return gulp.src(BUILDS.views.src)
     .pipe(errorNotifier())
+    .pipe(cached(BUILDS.views.task))
     .pipe(grayMatter())
     .pipe(nunjucks(OPTIONS.nunjucks))
     .pipe(HTMLBuild())
@@ -187,6 +190,7 @@ gulp.task(BUILDS.views.task, () => {
 gulp.task(BUILDS.components.task, () => {
   return gulp.src(BUILDS.components.src)
     .pipe(errorNotifier())
+    .pipe(cached(BUILDS.components.task))
     .pipe(HTMLBuild())
     .pipe(gulp.dest(BUILDS.components.dest));
 });
@@ -200,6 +204,7 @@ gulp.task(BUILDS.assets.task, () => {
 
   return gulp.src(BUILDS.assets.src)
     .pipe(errorNotifier())
+    .pipe(cached(BUILDS.assets.task))
     .pipe(images)
     .pipe(imagemin())
     .pipe(images.restore)
