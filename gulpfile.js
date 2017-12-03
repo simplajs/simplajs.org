@@ -38,7 +38,7 @@ const ENV = process.env.NODE_ENV,
       BUILDS = {
         content: {
           task: 'build:content',
-          src: 'src/_content/**/*',
+          src: '_content/**/*',
           watch: '_content/**/*',
           dest: 'dist/_content'
         },

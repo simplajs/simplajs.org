@@ -25,7 +25,7 @@
       import SimplaNetlify from 'simpla/adapters/netlify';
 
       const SIMPLA_CONFIG = {
-        repo: 'simplaio/simpla.io',
+        repo: 'simplaio/simpla.io-oss',
         auth: new SimplaNetlify({ site: 'simplaio' }),
         source: window.location.origin,
         branch: 'master'
@@ -41,6 +41,14 @@
       // Init Simpla
       Simpla.init(SIMPLA_CONFIG);
       window.Simpla = Simpla;
+
+      // Notifying save utility method
+      // Not using simpla-admin (due to demo mode)
+      window.SimplaIO.save = () => {
+        Simpla.save()
+          .then(() => alert('Content saved!'))
+          .catch(err => alert(`Save failed, ${err}`));
+      }
     </script>
 
     <!-- Components -->
@@ -189,7 +197,6 @@
         font-size: responsive 15px 18px;
         color: var(--simpla-text-color);
         -ms-overflow-style: -ms-autohiding-scrollbar;
-        scroll-behavior: smooth;
       }
 
       body {
