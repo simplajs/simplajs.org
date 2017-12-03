@@ -1,0 +1,164 @@
+<link rel="import" href="/assets/shared-styles.html">
+<link rel="import" href="/bower_components/simple-callout/simple-callout.html">
+
+<dom-module id="index-demo-mode">
+  <template>
+    <style include="shared-styles">
+      :host {
+        position: relative;
+        border-radius: 999px;
+        border: 1px solid var(--simpla-grey-300);
+        transition: background 90ms ease;
+        width: 8.75rem;
+        height: 2.8rem;
+        background: #fefefe;
+        user-select: none;
+      }
+
+      :host([active]) {
+        background: var(--simpla-blue);
+      }
+
+      .thumb {
+        position: absolute;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        left: 0;
+        width: 61.75%;
+        height: 100%;
+        border-radius: 999px;
+        font-size: var(--scale-000);
+        color: var(--simpla-grey-700);
+        font-weight: bold;
+        background: var(--simpla-grey-100);
+        border: 1px solid var(--simpla-grey-300);
+        cursor: pointer;
+        transition: transform 150ms var(--simpla-easing-standard);
+      }
+
+      :host([active]) .thumb {
+        color: var(--simpla-blue);
+        transform: translateX(63%);
+      }
+
+      .tooltip {
+        position: absolute;
+        bottom: -3rem;
+        left: 0.5rem;
+        right: 0.5rem;
+        padding: 0.5rem;
+        color: var(--simpla-grey-700);
+        font-size: var(--scale-000);
+        pointer-events: none;
+        text-align: center;
+      }
+
+      .exit {
+        @apply(--button);
+        display: none;
+        position: fixed;
+        top: 1rem;
+        right: 1.5rem;
+        font-size: var(--scale-00);
+        box-shadow: var(--simpla-elevation-2);
+        z-index: 9999;
+      }
+
+      .exit::before {
+        @apply(--simpla-button-highlight)
+      }
+
+      .exit:active::before {
+        @apply(--simpla-button-highlight-active)
+      }
+
+      :host([active]) .exit {
+        display: block;
+      }
+    </style>
+
+    <div
+      id="thumb"
+      class="thumb"
+      on-tap="toggle">
+      DEMO
+    </div>
+
+    <simple-callout
+      class="tooltip"
+      origin="top center"
+      active="[[active]]"
+      no-outside-click
+      no-escape
+      arrow
+    >
+      <span>Edit this page!</span>
+    </simple-callout>
+
+    <span class="exit"
+      on-tap="exit">
+      exit demo
+    </span>
+  </template>
+</dom-module>
+
+<script>
+  class IndexDemoMode {
+    beforeRegister() {
+      this.is = 'index-demo-mode';
+
+      this.properties = {
+        active: {
+          type: Boolean,
+          observer: '_syncEditableWithActive',
+          reflectToAttribute: true,
+          value: false
+        }
+      };
+
+      this.listeners = {
+        'track': '_handleTrack'
+      };
+    }
+
+    toggle() {
+      this.active = !this.active;
+    }
+
+    exit() {
+      this.active = false;
+    }
+
+    _syncEditableWithActive(active) {
+      Simpla.editable(active);
+    }
+
+    _handleTrack(e, { x: end, dx, state }) {
+      const inRightHalf = (x) => x > centre;
+            inLeftHalf = (x) => x < centre;
+
+      let start = end - dx,
+          buttonWidth,
+          buttonBounds,
+          centre;
+
+      if (state !== 'end') {
+        return;
+      }
+
+      buttonBounds = this.getBoundingClientRect();
+      buttonWidth = buttonBounds.right - buttonBounds.left;
+      centre = buttonBounds.left + buttonWidth / 2;
+
+      if (inLeftHalf(start) && inRightHalf(end)) {
+        this.active = true;
+      }
+
+      if (inRightHalf(start) && inLeftHalf(end)) {
+        this.active = false;
+      }
+    }
+  }
+  Polymer(IndexDemoMode);
+</script>

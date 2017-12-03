@@ -56,7 +56,6 @@
   "dependencies": {
     "fontfaceobserver": "^2.0.5",
     "prismjs": "^1.5.1",
-    "simpla": "^3.0.0",
-    "smoothscroll-polyfill": "^0.3.0"
+    "simpla": "^3.0.0"
   }
 }

@@ -14,6 +14,7 @@ description: Simpla is an open, modular, frontend content management framework b
 <link rel="import" href="/components/ui-footer.html" async>
 <link rel="import" href="/components/ui-example-interactive.html" async>
 <link rel="import" href="/components/ui-example-snippets.html" async>
+<link rel="import" href="/components/index-demo-mode.html" async>
 <link rel="import" href="/components/index-title.html">
 <link rel="import" href="/assets/icons.html" async>
 {% endblock %}
@@ -83,7 +84,7 @@ description: Simpla is an open, modular, frontend content management framework b
     font-size: var(--scale-0);
     color: var(--simpla-blue);
     padding: var(--button-fatter);
-    margin-top: 8vh;
+    margin-top: 10vh;
     background: white;
     box-shadow: var(--simpla-elevation-1);
   }
@@ -122,22 +123,6 @@ description: Simpla is an open, modular, frontend content management framework b
 
   .splash__social__button:hover .social__button__icon {
     transform: translateY(-25%);
-  }
-
-  .splash__more {
-    position: absolute;
-    bottom: 2rem;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: var(--scale-3);
-    color: white;
-    opacity: 0.75;
-    cursor: pointer;
-    transition: opacity 200ms ease;
-  }
-
-  .splash__more:hover {
-    opacity: 1;
   }
 
   /**
@@ -321,6 +306,7 @@ description: Simpla is an open, modular, frontend content management framework b
       <h1 class="splash__heading">
         <index-title sid="heading"></index-title>
       </h1>
+      <br>
       <simpla-link sid="cta" class="splash__cta">
         <simpla-text sid="text" inline plaintext></simpla-text>
       </simpla-link>
@@ -347,10 +333,6 @@ description: Simpla is an open, modular, frontend content management framework b
         </simpla-link>
       </div>
     </div>
-
-    <a class="splash__more" id="see-more">
-      <iron-icon icon="simpla:arrow-downward"></iron-icon>
-    </a>
   </section>
 
   <section class="intro wrapper" sid="intro">
@@ -410,6 +392,7 @@ description: Simpla is an open, modular, frontend content management framework b
         </h1>
 
         <simpla-text class="feature__content__copy" sid="copy"></simpla-text>
+        <index-demo-mode></index-demo-mode>
       </div>
 
       <div class="feature__graphic">
@@ -461,21 +444,9 @@ description: Simpla is an open, modular, frontend content management framework b
 
 {% block scripts %}
 <script>
-  import smoothscrollPolyfill from 'smoothscroll-polyfill';
-
-  /**
-   * Splash section see-more button
-   */
-  (() => {
-    const button = document.querySelector('#see-more'),
-          target = document.querySelector('.intro');
-
-    button.addEventListener('click', () => {
-      target.scrollIntoView({ behavior: 'smooth' });
-    });
-
-    smoothscrollPolyfill.polyfill();
-  })();
-
+  // Disable login prompts and hashtracking (for demo mode)
+  window.SimplaAdmin = window.SimplaAdmin || {};
+  SimplaAdmin.loginPrompt = false;
+  SimplaAdmin.hashTracking = false;
 </script>
 {% endblock %}
