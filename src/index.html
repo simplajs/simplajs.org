@@ -72,6 +72,7 @@ description: Simpla is an open, modular, frontend content management framework b
     font-weight: 600;
     max-width: 45rem;
     color: white;
+    margin-top: 3vh;
   }
 
   @media (--mobile) {
@@ -85,7 +86,7 @@ description: Simpla is an open, modular, frontend content management framework b
     font-size: var(--scale-0);
     color: var(--simpla-blue);
     padding: var(--button-fatter);
-    margin-top: 10vh;
+    margin-top: 8vh;
     background: white;
     box-shadow: var(--simpla-elevation-1);
   }
@@ -113,12 +114,10 @@ description: Simpla is an open, modular, frontend content management framework b
   .splash__social__button {
     display: block;
     margin: 0 var(--scale-1);
-    cursor: pointer;
   }
 
   .social__button__icon {
     font-size: var(--scale-2);
-    margin-bottom: var(--scale-1);
     transition: transform 100ms var(--simpla-easing-standard);
   }
 
@@ -312,7 +311,11 @@ description: Simpla is an open, modular, frontend content management framework b
         <simpla-text sid="text" inline plaintext></simpla-text>
       </simpla-link>
       <div class="splash__social" sid="social">
-        <simpla-link sid="twitter" class="splash__social__button">
+        <simpla-link
+          sid="twitter"
+          class="splash__social__button"
+          target="_blank"
+        >
           <iron-icon
             icon="simplaio:twitter"
             class="social__button__icon">
@@ -322,7 +325,11 @@ description: Simpla is an open, modular, frontend content management framework b
             class="social__button__text">
           </simpla-text>
         </simpla-link>
-        <simpla-link sid="github" class="splash__social__button">
+        <simpla-link
+          sid="github"
+          class="splash__social__button"
+          target="_blank"
+        >
           <iron-icon
             icon="simplaio:github"
             class="social__button__icon">
@@ -392,7 +399,10 @@ description: Simpla is an open, modular, frontend content management framework b
           <simpla-text sid="heading"></simpla-text>
         </h1>
 
-        <simpla-text class="feature__content__copy" sid="copy"></simpla-text>
+        <simpla-text
+          sid="copy"
+          class="feature__content__copy">
+        </simpla-text>
         <index-demo-mode></index-demo-mode>
       </div>
 
@@ -404,13 +414,16 @@ description: Simpla is an open, modular, frontend content management framework b
       </div>
     </div>
 
-    <div class="feature" sid="webcomponents">
+    <div class="feature" sid="integrations">
       <div class="feature__content">
         <h1 class="heading">
           <simpla-text sid="heading"></simpla-text>
         </h1>
 
-        <simpla-text class="feature__content__copy" sid="copy"></simpla-text>
+        <simpla-text
+          sid="copy"
+          class="feature__content__copy">
+        </simpla-text>
       </div>
 
       <div class="feature__graphic">
