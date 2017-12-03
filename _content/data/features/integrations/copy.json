@@ -1,0 +1,9 @@
+{
+  "type": "Text",
+  "data": {
+    "text": "<p>Simpla is built on new web standards, and you can mix it into whatever stack you already use. It works out-of-the-box with most frontend frameworks, and you can easily tie its API into existing app logic.</p>"
+  },
+  "path": "/features/integrations/copy",
+  "createdAt": "2017-12-03T22:38:40.080Z",
+  "updatedAt": "2017-12-03T22:39:53.995Z"
+}
