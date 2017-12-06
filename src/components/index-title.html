@@ -138,7 +138,8 @@
         }
 
         this._initialValue = title.value;
-        this.async(() => {
+
+        setTimeout(() => {
           title.editable = true
 
           title.loadEditor()
@@ -146,7 +147,7 @@
               this._editableReady = true;
               this._focusTitle(true)
             });
-        });
+        }, 50);
       }
 
       _giveFocus() {
