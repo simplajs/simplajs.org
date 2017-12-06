@@ -14,6 +14,7 @@ const browserSync = require('browser-sync');
 // HTML
 const nunjucks = require('gulp-nunjucks-render');
 const grayMatter = require('gulp-gray-matter');
+const inlineSource = require('gulp-inline-source');
 const processInline = require('gulp-process-inline');
 const HTMLmin = require('gulp-htmlmin');
 
@@ -141,6 +142,7 @@ function errorNotifier() {
  * Main HTML build pipeline for HTML files
  */
 const HTMLBuild = lazypipe()
+  .pipe(inlineSource)
   .pipe(() => processInline().extract('script'))
   .pipe(rollup, OPTIONS.rollup)
   .pipe(() => processInline().restore())
