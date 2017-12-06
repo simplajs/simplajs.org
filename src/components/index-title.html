@@ -1,5 +1,5 @@
 <link rel="import" href="/assets/shared-styles.html">
-<link rel="import" href="/bower_components/simpla-text/simpla-text.html" async>
+<link rel="import" href="/bower_components/simpla-text/simpla-text.html">
 <link rel="import" href="/bower_components/paper-tooltip/paper-tooltip.html">
 
 <dom-module id="index-title">
@@ -168,11 +168,16 @@
       }
 
       _focusTitle(center) {
-        let title = this.$.title,
-            content = Array.from(title.childNodes).find(node => node.nodeName === '#text'),
-            range = document.createRange(),
-            cursor = window.getSelection(),
-            cursorPos = center === true ? Math.round(content.length / 2) : content.length;
+        const title = this.$.title,
+              content = Array.from(title.childNodes).find(node => node.nodeName === '#text'),
+              range = document.createRange(),
+              cursor = window.getSelection();
+
+        if (!content) {
+          return;
+        }
+
+        let cursorPos = center === true ? Math.round(content.length / 2) : content.length;
 
         Polymer.RenderStatus.afterNextRender(this, () => {
           title.focus();
