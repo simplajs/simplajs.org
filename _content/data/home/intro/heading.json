@@ -1,9 +1,9 @@
 {
   "type": "Text",
   "data": {
-    "text": "The CMS for frontend developers"
+    "text": "Content management for the modern web"
   },
-  "path": "/intro/heading",
+  "path": "/home/intro/heading",
   "createdAt": "2017-12-03T09:14:46.913Z",
-  "updatedAt": "2017-12-03T09:16:41.481Z"
+  "updatedAt": "2017-12-15T23:19:44.393Z"
 }
