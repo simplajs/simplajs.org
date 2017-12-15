@@ -1,9 +1,9 @@
 {
   "type": "Text",
   "data": {
-    "text": "<p>Build dynamic content straight in HTML. Simpla's web components let you instantly mix beautiful content management into any project, and leave the server behind.</p>"
+    "text": "<p>Leave the server behind and build content straight in HTML. Simpla's web components let you instantly mix dynamic content into any project, with a flat-file serverless architecture.</p>"
   },
   "path": "/home/features/development/copy",
   "createdAt": "2017-12-03T09:14:46.917Z",
-  "updatedAt": "2017-12-04T04:34:29.148Z"
+  "updatedAt": "2017-12-15T23:20:23.166Z"
 }
