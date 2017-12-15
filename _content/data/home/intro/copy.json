@@ -1,9 +1,9 @@
 {
   "type": "Text",
   "data": {
-    "text": "<p>Simpla is an open, modular, frontend content framework built on Web Components. Create dynamic content with HTML, edit it inline, and use Github as your backend.</p>"
+    "text": "<p>Simpla is an open, modular, and serverless content system built on Web Components. Create dynamic content with HTML, edit it inline, and use Github as your backend.</p>"
   },
-  "path": "/intro/copy",
+  "path": "/home/intro/copy",
   "createdAt": "2017-12-03T09:14:46.914Z",
-  "updatedAt": "2017-12-03T09:16:45.435Z"
+  "updatedAt": "2017-12-15T23:19:49.359Z"
 }
