@@ -7,10 +7,10 @@
     <meta name="description" content="{{ description }}">
 
     <!-- Social -->
-    <meta property="og:image" content="https://www.simpla.io/assets/img/demo.gif">
+    <meta property="og:image" content="https://www.simplajs.org/assets/img/demo.gif">
     <meta name="twitter:card" content="summary">
-    <meta name="twitter:site:id" content="@simplaio">
-    <meta name="twitter:image" content="https://www.simpla.io/assets/img/demo.gif">
+    <meta name="twitter:site:id" content="@simplajs">
+    <meta name="twitter:image" content="https://www.simplajs.org/assets/img/demo.gif">
 
     <!-- Icons -->
     <link rel="icon" sizes="32x32" href="/assets/img/icns/favicon-32x32.png">
@@ -25,8 +25,8 @@
       import SimplaNetlify from 'simpla/adapters/netlify';
 
       const SIMPLA_CONFIG = {
-        repo: 'simplaio/simpla.io',
-        auth: new SimplaNetlify({ site: 'simplaio' }),
+        repo: 'simplajs/simplajs.org',
+        auth: new SimplaNetlify({ site: 'simplajs' }),
         source: window.location.origin,
         branch: 'master'
       };
@@ -44,8 +44,8 @@
 
       // Save utility method
       // We're not using simpla-admin due to demo mode
-      window.SimplaIO = {};
-      window.SimplaIO.save = () => {
+      window.SimplaJS = {};
+      window.SimplaJS.save = () => {
         const loginThenSave = () => {
           if (!Simpla.getState('authenticated')) {
             return Simpla.login().then(() => Simpla.save());
