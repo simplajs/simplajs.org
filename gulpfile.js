@@ -69,7 +69,7 @@ const ENV = process.env.NODE_ENV,
       watch: 'src/assets/**/*',
       dest: 'dist/assets'
     },
-    assets: {
+    headers: {
       task: 'build:headers',
       src: 'src/_headers',
       watch: 'src/_headers',
