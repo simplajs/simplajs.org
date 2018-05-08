@@ -24,6 +24,7 @@ const resolve = require('rollup-plugin-node-resolve');
 const commonJs = require('rollup-plugin-commonjs');
 const buble = require('rollup-plugin-buble');
 const eslint = require('gulp-eslint');
+const uglify = require('gulp-uglify');
 
 // CSS
 const postcss = require('gulp-postcss');
@@ -37,96 +38,102 @@ const customMedia = require('postcss-custom-media');
 const imagemin = require('gulp-imagemin');
 
 const ENV = process.env.NODE_ENV,
-      BUILDS = {
-        content: {
-          task: 'build:content',
-          src: '_content/**/*',
-          watch: '_content/**/*',
-          dest: 'dist/_content'
-        },
-        views: {
-          task: 'build:views',
-          src: [ 'src/*.html', '!src/_base.html' ],
-          watch: 'src/*.html',
-          dest: 'dist'
-        },
-        components: {
-          task: 'build:components',
-          src: 'src/components/**/*.html',
-          watch: 'src/components/**/*',
-          dest: 'dist/components'
-        },
-        assets: {
-          task: 'build:assets',
-          src: 'src/assets/**/*',
-          watch: 'src/assets/**/*',
-          dest: 'dist/assets'
+  BUILDS = {
+    content: {
+      task: 'build:content',
+      src: '_content/**/*',
+      watch: '_content/**/*',
+      dest: 'dist/_content'
+    },
+    views: {
+      task: 'build:views',
+      src: ['src/*.html', '!src/_base.html'],
+      watch: 'src/*.html',
+      dest: 'dist'
+    },
+    js: {
+      task: 'build:js',
+      src: 'src/scripts.js',
+      watch: 'src/scripts.js',
+      dest: 'dist'
+    },
+    components: {
+      task: 'build:components',
+      src: 'src/components/**/*.html',
+      watch: 'src/components/**/*',
+      dest: 'dist/components'
+    },
+    assets: {
+      task: 'build:assets',
+      src: 'src/assets/**/*',
+      watch: 'src/assets/**/*',
+      dest: 'dist/assets'
+    }
+  },
+  OPTIONS = {
+    nunjucks: {
+      path: 'src',
+      envOptions: {
+        autoescape: false
+      }
+    },
+    rollup: {
+      plugins: [
+        resolve({ main: true, browser: true }),
+        commonJs(),
+        buble({
+          transforms: {
+            modules: false
+          },
+          exclude: 'node_modules/**/*'
+        })
+      ],
+      format: 'iife',
+      moduleName: 'simplaio'
+    },
+    postcss: [
+      responsiveType(),
+      customMedia(),
+      autoprefixer(),
+      postcssContext({
+        normalize: normalize()
+      })
+    ],
+    eslint: {
+      fix: true
+    },
+    HTMLmin: {
+      removeComments: true,
+      removeCommentsFromCDATA: true,
+      collapseWhitespace: true,
+      conservativeCollapse: true,
+      caseSensitive: true,
+      keepClosingSlash: true,
+      customAttrAssign: [/\$=/],
+      minifyCSS: true,
+      minifyJS: true
+    },
+    inline: {
+      compress: false,
+      swallowErrors: true
+    },
+    browserSync: {
+      server: {
+        baseDir: 'dist',
+        serveStaticOptions: {
+          extensions: ['html']
         }
       },
-      OPTIONS = {
-        nunjucks: {
-          path: 'src',
-          envOptions: {
-            autoescape: false
-          },
-        },
-        rollup: {
-          plugins: [
-            resolve({ main: true, browser: true }),
-            commonJs(),
-            buble({
-              transforms: {
-                modules: false
-              },
-              exclude: 'node_modules/**/*'
-            })
-          ],
-          format: 'iife',
-          moduleName: 'simplaio'
-        },
-        postcss: [
-          responsiveType(),
-          customMedia(),
-          autoprefixer(),
-          postcssContext({
-            normalize: normalize()
-          })
-        ],
-        eslint: {
-          fix: true
-        },
-        HTMLmin: {
-          removeComments: true,
-          removeCommentsFromCDATA: true,
-          collapseWhitespace: true,
-          conservativeCollapse: true,
-          caseSensitive: true,
-          keepClosingSlash: true,
-          customAttrAssign: [/\$=/],
-          minifyCSS: true,
-          minifyJS: true
-        },
-        inline: {
-          compress: false,
-          swallowErrors: true
-        },
-        browserSync: {
-          server: {
-            baseDir: 'dist',
-            serveStaticOptions: {
-              extensions: [ 'html' ]
-            }
-          },
-          open: false,
-          notify: false
-        },
-        size: {
-          gzip: true
-        }
-      },
-      FILTERS = {
-        images: file => /\.(jpg|jpeg|png|gif|)$/.test(file.path)
-      };
+      open: false,
+      notify: false
+    },
+    size: {
+      gzip: true
+    }
+  },
+  FILTERS = {
+    images: file => /\.(jpg|jpeg|png|gif|)$/.test(file.path)
+  };
 
 /**
  * Custom error notifier
@@ -149,9 +156,12 @@ const HTMLBuild = lazypipe()
   .pipe(() => processInline().extract('style'))
   .pipe(postcss, OPTIONS.postcss)
   .pipe(() => processInline().restore())
-  .pipe(() => gulpif(ENV === 'production',
-    HTMLmin(OPTIONS.HTMLmin),
-    eslint(OPTIONS.eslint))
+  .pipe(() =>
+    gulpif(
+      ENV === 'production',
+      HTMLmin(OPTIONS.HTMLmin),
+      eslint(OPTIONS.eslint)
+    )
   )
   .pipe(size, OPTIONS.size);
 
@@ -162,7 +172,8 @@ const HTMLBuild = lazypipe()
 gulp.task(BUILDS.content.task, () => {
   const images = filter(FILTERS.images, { restore: true });
 
-  return gulp.src(BUILDS.content.src)
+  return gulp
+    .src(BUILDS.content.src)
     .pipe(errorNotifier())
     .pipe(cached(BUILDS.content.task))
     .pipe(images)
@@ -171,12 +182,23 @@ gulp.task(BUILDS.content.task, () => {
     .pipe(gulp.dest(BUILDS.content.dest));
 });
 
+// Temp JS build
+gulp.task(BUILDS.js.task, () => {
+  return gulp
+    .src(BUILDS.js.src)
+    .pipe(errorNotifier())
+    .pipe(rollup(OPTIONS.rollup))
+    .pipe(uglify())
+    .pipe(gulp.dest(BUILDS.js.dest));
+});
+
 /**
  * Views build
  * Compiles nunjucks view templates
  */
 gulp.task(BUILDS.views.task, () => {
-  return gulp.src(BUILDS.views.src)
+  return gulp
+    .src(BUILDS.views.src)
     .pipe(errorNotifier())
     .pipe(cached(BUILDS.views.task))
     .pipe(grayMatter())
@@ -190,7 +212,8 @@ gulp.task(BUILDS.views.task, () => {
  * Runs HTML pipeline on components
  */
 gulp.task(BUILDS.components.task, () => {
-  return gulp.src(BUILDS.components.src)
+  return gulp
+    .src(BUILDS.components.src)
     .pipe(errorNotifier())
     .pipe(cached(BUILDS.components.task))
     .pipe(HTMLBuild())
@@ -204,7 +227,8 @@ gulp.task(BUILDS.components.task, () => {
 gulp.task(BUILDS.assets.task, () => {
   const images = filter(FILTERS.images, { restore: true });
 
-  return gulp.src(BUILDS.assets.src)
+  return gulp
+    .src(BUILDS.assets.src)
     .pipe(errorNotifier())
     .pipe(cached(BUILDS.assets.task))
     .pipe(images)
@@ -217,7 +241,10 @@ gulp.task(BUILDS.assets.task, () => {
  * Main build
  * Utility task to run all builds
  */
-gulp.task('build', gulp.parallel(Object.keys(BUILDS).map(build => BUILDS[build].task)));
+gulp.task(
+  'build',
+  gulp.parallel(Object.keys(BUILDS).map(build => BUILDS[build].task))
+);
 
 /**
  * Gulp watchers
@@ -226,7 +253,10 @@ gulp.task('build', gulp.parallel(Object.keys(BUILDS).map(build => BUILDS[build].
 gulp.task('watch', () => {
   Object.keys(BUILDS).forEach(build => {
     const config = BUILDS[build],
-          watcher = gulp.watch(config.watch, gulp.series(config.task, 'serve:refresh'));
+      watcher = gulp.watch(
+        config.watch,
+        gulp.series(config.task, 'serve:refresh')
+      );
 
     watcher.on('unlink', filePath => {
       del.sync(path.resolve(config.dest, filePath));
@@ -248,7 +278,8 @@ gulp.task('serve:refresh', done => {
  * Called on postinstall hook by Bower
  */
 gulp.task('bower:minify', () => {
-  return gulp.src('./dist/bower_components/**/*.html')
+  return gulp
+    .src('./dist/bower_components/**/*.html')
     .pipe(HTMLmin(OPTIONS.HTMLmin))
     .pipe(gulp.dest('dist/bower_components'));
 });
