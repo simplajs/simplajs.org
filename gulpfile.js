@@ -68,6 +68,12 @@ const ENV = process.env.NODE_ENV,
       src: 'src/assets/**/*',
       watch: 'src/assets/**/*',
       dest: 'dist/assets'
+    },
+    assets: {
+      task: 'build:headers',
+      src: 'src/_headers',
+      watch: 'src/_headers',
+      dest: 'dist'
     }
   },
   OPTIONS = {
@@ -235,6 +241,11 @@ gulp.task(BUILDS.assets.task, () => {
     .pipe(imagemin())
     .pipe(images.restore)
     .pipe(gulp.dest(BUILDS.assets.dest));
+});
+
+// Temp headers copy
+gulp.task(BUILDS.headers.task, () => {
+  return gulp.src(BUILDS.headers.src).pipe(gulp.dest(BUILDS.headers.dest));
 });
 
 /**
